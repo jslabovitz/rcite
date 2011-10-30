@@ -1,0 +1,27 @@
+# RCite
+
+## Functionality
+
+In case it is ever finished, RCite will be a tool to generate citations and
+bibliography entries based on parameterized literature descriptions in
+the spirit of BibTeX, BibLaTeX and CSL.
+
+## Why RCite?
+
+The existing solutions (as listed above) all have one flaw in common: It is
+utterly cumbersome to create or edit styles. BibTeX style syntax is extremely
+hard to learn; BibLaTeX suffers from the fact that LaTeX itself is something
+of a hybrid between programming and markup language, and CSL uses XML as a
+basis.
+
+RCite attempts to circumvent this flaw by making styles pure Ruby. Given its
+simplicity and human-readability, Ruby is almost ideal for this purpose:
+Beginners can use builtin methods to chain strings together, while experts
+can use its full power to create complex styles. RCite essentially aims to
+provide a parser for literature databases, a nice set of helper methods
+to ease style creation and a processor that applies styles to the databases.
+
+## Input
+
+Currently, only support for BibTeX is planned via the bibtex-ruby gem.
+Parsers for other literature databases may be added at a later point.

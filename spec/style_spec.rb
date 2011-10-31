@@ -1,22 +1,22 @@
-require 'style.rb'
-
-class UserStyle < RCite::Style 
-  def cite_book(text)
-    'book cited!'
-  end
-
-  def bib_book(text)
-    'book bib\'d!'
-  end
-end
+require 'style'
+require 'rspec/mocks'
 
 describe RCite::Style do
 
   before(:all) do
-    @style = UserStyle.new
-    
     @book_entry = {:type => :book}
     @article_entry = {:type => :article}
+  end
+
+  before(:each) do
+    @style = RCite::Style.new
+    # The following mocks a concrete style implementation:
+    # the user would implement cite_book, cite_article, bib_book etc.
+    # methods in order to define how certain types of
+    # texts should be cited in a text/footnote and in the
+    # bibliography.
+    @style.stub(:cite_book) { 'book cited!' }
+    @style.stub(:bib_book) { 'book bib\'d!' }
   end
 
   describe '#cite' do

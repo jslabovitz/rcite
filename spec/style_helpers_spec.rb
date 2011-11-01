@@ -8,7 +8,7 @@ describe RCite::Style do
   end
 
   it "should have helper methods for all the BibTeX fields" do
-    @style.instance_variable_set('@text', { :crossref => 'refme!' })
+    $text = { :crossref => 'refme!' }
     @style.crossref.should == 'refme!'
   end
 
@@ -33,7 +33,7 @@ describe RCite::Style do
         :id => 'book1',
         :issued => { 'date-parts' => [[2011,3]] }
       }
-      @style.instance_variable_set('@text', text)
+      $text = text
       @style.year.should == "2011"
     end
   end
@@ -44,7 +44,7 @@ describe RCite::Style do
         :id => 'book1',
         :issued => { 'date-parts' => [[2011,3]] }
       }
-      @style.instance_variable_set('@text', text)
+      $text = text
       @style.month.should == "3"
     end
   end

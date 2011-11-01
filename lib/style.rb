@@ -7,7 +7,9 @@ module RCite
 
     # Generates a citation for the given `text`. This method dynamically
     # looks up the method `"cite_#{text[:type]}"` and calls it with
-    # `text` as the only argument.
+    # `text` as the only argument. Before that it sets the `$text` global 
+    # variable to be `text` so that the method it calls can access it.
+    # When this method returns, `$text` is set to `nil` again.
     #
     # @param [Hash] text A bibliography entry hash
     #   in the 'citeproc' format as returned by `BibTeX::Entry#to_citeproc`
@@ -20,12 +22,19 @@ module RCite
         raise ArgumentError.new("This style does not define the type"+
           "'#{text[:type]}'.")
       end
-      send(method, text)
+      $text = text
+      begin
+        send(method, text)
+      ensure
+        $text = nil
+      end
     end
     
     # Generates a bibliography entry for the given `text`. This method dynamically
     # looks up the method `"bib_#{text[:type]}"` and calls it with
-    # `text` as the only argument.
+    # `text` as the only argument. Before that it sets the `$text`global 
+    # variable to be `text` so that the method it calls can access it.
+    # When this method returns, `$text` is set to `nil` again.
     #
     # @param (see #cite)
     # @raise (see #cite)
@@ -36,7 +45,12 @@ module RCite
         raise ArgumentError.new("This style does not define the type"+
           "'#{text[:type]}'.")
       end
-      send(method, text) 
+      $text = text
+      begin
+        send(method, text) 
+      ensure
+        $text = nil
+      end
     end
   end
 end

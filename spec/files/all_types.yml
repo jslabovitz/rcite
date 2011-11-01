@@ -1,0 +1,370 @@
+--- 
+- id: article1
+  type: article-journal
+  author: 
+  - family: Limperg
+    given: Jannis Benedikt
+    dropping-particle: von
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  container-title: NJW
+  volume: "120"
+  collection-title: "12"
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: article2
+  type: article-journal
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  container-title: NJW
+  issue: "1200"
+  collection-title: "12"
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: book1
+  type: book
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  publisher: Suhrkamp
+  volume: "120"
+  collection-title: "12"
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: book2
+  type: book
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  title: Ein Artikel
+  publisher: Suhrkamp
+  issue: "1200"
+  collection-title: "12"
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: booklet1
+  type: pamphlet
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  howpublished: gar nicht
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: inbook1
+  type: chapter
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  publisher: Suhrkamp
+  chapter: "2"
+  page: 120--1200
+  volume: "120"
+  collection-title: "12"
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: inbook2
+  type: chapter
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  title: Ein Artikel
+  publisher: Suhrkamp
+  chapter: "2"
+  page: 120--1200
+  issue: "1200"
+  collection-title: "12"
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: incollection1
+  type: useless incollection
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  container-title: Theorie der Gesellschaft
+  publisher: Suhrkamp
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  volume: "120"
+  collection-title: "12"
+  chapter: "2"
+  page: 120--1200
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: incollection2
+  type: useless incollection
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  container-title: Theorie der Gesellschaft
+  publisher: Suhrkamp
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  issue: "1200"
+  collection-title: "12"
+  chapter: "2"
+  page: 120--1200
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: inproceedings1
+  type: paper-conference
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  container-title: Theorie der Gesellschaft
+  publisher: Suhrkamp
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  volume: "120"
+  collection-title: "12"
+  page: 120--1200
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  organization: akj freiburg
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: inproceedings2
+  type: paper-conference
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  container-title: Theorie der Gesellschaft
+  publisher: Suhrkamp
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  issue: "1200"
+  collection-title: "12"
+  page: 120--1200
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  organization: akj freiburg
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: manual1
+  type: book
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  organization: akj freiburg
+  publisher-place: Freiburg
+  edition: 5. Aufl.
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: mastersthesis1
+  type: useless mastersthesis
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  title: Ein Artikel
+  school: Uni Freiburg
+  note: "unn\xC3\xB6tig!"
+  publisher-place: Freiburg
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: misc1
+  type: article
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  howpublished: gar nicht
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: phdthesis1
+  type: useless mastersthesis
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  school: Uni Freiburg
+  note: "unn\xC3\xB6tig!"
+  publisher-place: Freiburg
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: proceedings1
+  type: paper-conference
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  institution: akj freiburg
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  volume: "120"
+  collection-title: "12"
+  publisher-place: Freiburg
+  organization: akj freiburg
+  publisher: Suhrkamp
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: proceedings2
+  type: paper-conference
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  institution: akj freiburg
+  editor: 
+  - family: Limperg
+    given: Bettina
+  - family: Limperg
+    given: Michael
+  issue: "1200"
+  collection-title: "12"
+  publisher-place: Freiburg
+  organization: akj freiburg
+  publisher: Suhrkamp
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: techreport1
+  type: useless techreport
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  institution: akj freiburg
+  publisher-place: Freiburg
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3
+- id: unpublished1
+  type: manuscript
+  title: Ein Artikel
+  author: 
+  - family: Limperg
+    given: Jannis
+  - family: Otto
+    given: Kai
+  note: "unn\xC3\xB6tig!"
+  issued: 
+    date-parts: 
+    - - 2011
+      - 3

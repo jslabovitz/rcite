@@ -12,7 +12,7 @@ module RCite
   # Moreover, it provides shortcuts for citing and bibliography entry creation
   # by mapping {RCite::Style#cite} and {RCite::Style#bib}.
   #
-  # @todo Implement the shortcuts and BibTeX file loading. 
+  # @todo Implement the shortcuts.
   class Processor
 
     # The style that is used to turn bibliographic data gathered from a
@@ -20,6 +20,11 @@ module RCite
     # usually be a subclass of {RCite::Style}. Can be `nil` if no style
     # has been loaded yet.
     attr_accessor :style
+
+    # A hash with bibliographic data loaded from a (BibTeX) file, as returned
+    # by the bibtex gem's {BibTeX::Bibliography#to_citeproc}. Can be `nil` if
+    # no data file has been loaded yet.
+    attr_accessor :bib
     
     # Loads a style file. The file must define a class with the same name as
     # its basename camelized, in the {RCite} module.
@@ -57,6 +62,12 @@ module RCite
         raise ArgumentError.new "Every style must define the 'cite' and 'bib'" +
           " instance methods."
       end
+    end
+
+    # Loads the specified BibTeX file and sets {#bib} accordingly. This method
+    # is merely a wrapper for {BibTeX::Bibliography#open}.
+    def load_data(file)
+      @bib = BibTeX::Bibliography.open(file)
     end
 
   end

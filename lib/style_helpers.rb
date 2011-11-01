@@ -23,6 +23,43 @@ module RCite
       :et_al_string => 'et al.',
     }
 
+    # These fields can be accessed through helper methods that are each
+    # named just as their respective field. Other fields that may also
+    # be defined in the BibTeX document can only be accessed directly via
+    # the hash, e.g. `@text[:unusual_field]`.
+    FIELDS = %w{
+      address
+      annote
+      author
+      booktitle
+      chapter
+      crossref
+      edition
+      editor
+      howpublished
+      institution
+      journal
+      key
+      month
+      note
+      number
+      organization
+      pages
+      publisher
+      school
+      series
+      title
+      type
+      volume
+      year
+    }
+
+    FIELDS.each do |f|
+      define_method("#{f}") do
+        @text[f.to_sym]
+      end
+    end
+
     # Loads the default options. Style authors may define the method `default`
     # which should return an options hash (see {#defaults}). If they do so,
     # the options from their hash are merged with {DEFAULTS}, whereby the

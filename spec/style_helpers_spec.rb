@@ -7,6 +7,11 @@ describe RCite::Style do
     @style = RCite::Style.new
   end
 
+  it "should have helper methods for all the BibTeX fields" do
+    @style.instance_variable_set('@text', { :crossref => 'refme!' })
+    @style.crossref.should == 'refme!'
+  end
+
   describe '#initialize' do
     context "when the method #default is defined" do
       it "should merge the hash returned by that method with the builtin default options" do
@@ -21,7 +26,6 @@ describe RCite::Style do
       end
     end
   end
-
 
   describe '#year' do
     it "should return the year in which the current text was published" do

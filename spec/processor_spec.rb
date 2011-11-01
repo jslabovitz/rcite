@@ -1,4 +1,6 @@
 require 'processor'
+require 'style'
+require 'rspec/mocks'
 
 describe RCite::Processor do
 
@@ -30,4 +32,71 @@ describe RCite::Processor do
       end
     end
   end
+
+  BIB_HASH = [{:id => 'article1', :type => 'article'}]
+
+  describe '#cite' do
+
+    before(:each) do
+      @pro.bibliography = BIB_HASH
+      @pro.style = RCite::Style.new
+      @pro.style.stub :cite_article => "Article cited!"
+    end
+
+    context "when the style and bib attributes are set correctly and a valid id is given" do
+      it "should generate a citation based on the current style" do
+        @pro.cite(:article1).should == "Article cited!"
+      end
+    end
+
+    context "when the style and bib attributes are set correctly but an invalid id is given" do
+      it "should raise an ArgumentError" do
+        expect { @pro.cite(:book1) }.to raise_error ArgumentError
+      end
+    end
+
+    context "when either of the style and bib attributes are nil" do
+      it "should raise an ArgumentError" do
+        @pro.bibliography = nil
+        expect { @pro.cite(:article1) }.to raise_error ArgumentError
+
+        @pro.bibliography = BIB_HASH
+        @pro.style = nil
+        expect { @pro.cite(:article1) }.to raise_error ArgumentError
+      end
+    end
+  end
+
+  describe '#bib' do
+
+    before(:each) do
+      @pro.bibliography = BIB_HASH
+      @pro.style = RCite::Style.new
+      @pro.style.stub :bib_article => "Article bib\'d!"
+    end
+
+    context "when the style and bib attributes are set correctly and a valid id is given" do
+      it "should generate a bibliography entry based on the current style" do
+        @pro.bib(:article1).should == "Article bib\'d!"
+      end
+    end
+
+    context "when the style and bib attributes are set correctly but an invalid id is given" do
+      it "should raise an ArgumentError" do
+        expect { @pro.bib(:book1) }.to raise_error ArgumentError
+      end
+    end
+
+    context "when either of the style and bib attributes are nil" do
+      it "should raise an ArgumentError" do
+        @pro.bibliography = nil
+        expect { @pro.bib(:article1) }.to raise_error ArgumentError
+
+        @pro.bibliography = BIB_HASH
+        @pro.style = nil
+        expect { @pro.bib(:article1) }.to raise_error ArgumentError
+      end
+    end
+  end
+
 end

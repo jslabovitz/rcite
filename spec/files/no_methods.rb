@@ -1,0 +1,2 @@
+class NoMethods
+end

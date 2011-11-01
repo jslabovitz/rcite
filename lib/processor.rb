@@ -20,7 +20,7 @@ module RCite
     attr_accessor :style
 
     # A hash with bibliographic data loaded from a (BibTeX) file, as returned
-    # by the bibtex-ruby gem's {BibTeX::Bibliography#to_citeproc}. Can be `nil` if
+    # by the bibtex-ruby gem's `BibTeX::Bibliography#to_citeproc`. Can be `nil` if
     # no data file has been loaded yet.
     attr_accessor :bibliography
     
@@ -63,7 +63,7 @@ module RCite
     end
 
     # Loads the specified BibTeX file and sets {#bibliography} accordingly. This method
-    # is merely a wrapper for {BibTeX::Bibliography#open}.
+    # is merely a wrapper for `BibTeX::Bibliography#open`.
     def load_data(file)
       @bibliography = BibTeX::Bibliography.open(file)
     end

@@ -23,6 +23,30 @@ describe RCite::Style do
   end
 
 
+  describe '#year' do
+    it "should return the year in which the current text was published" do
+      text = {
+        :id => 'book1',
+        :issued => { 'date-parts' => [[2011,3]] }
+      }
+      @style.instance_variable_set('@text', text)
+      @style.year.should == "2011"
+    end
+  end
+
+  describe '#month' do
+    it "should return the month in which the current text was published" do
+      text = {
+        :id => 'book1',
+        :issued => { 'date-parts' => [[2011,3]] }
+      }
+      @style.instance_variable_set('@text', text)
+      @style.month.should == "3"
+    end
+  end
+
+
+
   describe '#authors_or_editors' do
 
     before(:all) do

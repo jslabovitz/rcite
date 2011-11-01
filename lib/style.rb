@@ -5,10 +5,6 @@ module RCite
   # as providing various helper methods to ease creating new styles.
   class Style
 
-    # Constructs a new `Style` object.
-    def initialize
-    end
-
     # Generates a citation for the given `text`. This method dynamically
     # looks up the method `"cite_#{text[:type]}"` and calls it with
     # `text` as the only argument.

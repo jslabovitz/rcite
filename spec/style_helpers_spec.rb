@@ -27,6 +27,27 @@ describe RCite::Style do
     end
   end
 
+  describe '#add' do
+    after(:each) do
+      $tmp = nil
+    end
+
+    context "when it is passed any number of strings" do
+      it "should add these strings to the $tmp global variable" do
+        @style.add("A string", "AnotherString", " ")
+        $tmp.should == "A stringAnotherString "
+      end
+    end
+
+    context "when the first value it is passed is nil or an empty string" do
+      it "should return without doing anything" do
+        @style.add(nil, "a string", "another string")
+        @style.add('', 'yet another string')
+        $tmp.should == nil
+      end
+    end
+  end
+
   describe '#year' do
     it "should return the year in which the current text was published" do
       text = {
@@ -48,8 +69,6 @@ describe RCite::Style do
       @style.month.should == "3"
     end
   end
-
-
 
   describe '#authors_or_editors' do
 

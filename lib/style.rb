@@ -23,11 +23,13 @@ module RCite
           "'#{text[:type]}'.")
       end
       $text = text
+      $tmp = ''
       begin
         send(method, text)
       ensure
         $text = nil
       end
+      $tmp
     end
     
     # Generates a bibliography entry for the given `text`. This method dynamically
@@ -46,11 +48,14 @@ module RCite
           "'#{text[:type]}'.")
       end
       $text = text
+      $tmp = ''
       begin
         send(method, text) 
       ensure
         $text = nil
       end
+      $tmp
     end
+
   end
 end

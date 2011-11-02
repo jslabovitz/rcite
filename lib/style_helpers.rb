@@ -66,8 +66,21 @@ module RCite
     # options returned by the `default` method supersede those from
     # `DEFAULTS`.
     def initialize
-        @defaults = methods.include?(:default) ? default : {}
-        @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
+      @defaults = methods.include?(:default) ? default : {}
+      @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
+      $tmp = ''
+    end
+
+    # Adds the specified `strings` to the global variable `$tmp`.
+    # If the first string is `nil` or empty, the method returns and does not
+    # append *anything*. This behaviour was chosen so that in most circumstances
+    # one can append a BibTeX field and the corresponding delimiter(s) without
+    # bothering whether the field is actually set.
+    #
+    # @param [String] strings Any number of strings that should be joined
+    #   together and appended to `$tmp`.
+    def add(*strings)
+      $tmp << strings.join if !strings.empty? && strings[0] && strings[0] != ''
     end
 
     # Returns a list of all authors of the given text if any are defined.

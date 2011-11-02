@@ -15,8 +15,8 @@ describe RCite::Style do
     # methods in order to define how certain types of
     # texts should be cited in a text/footnote and in the
     # bibliography.
-    @style.stub(:cite_book) { 'book cited!' if $text }
-    @style.stub(:bib_book) { 'book bib\'d!' if $text }
+    @style.stub(:cite_book) { $tmp = 'book cited!' if $text }
+    @style.stub(:bib_book) { $tmp = 'book bib\'d!' if $text }
   end
 
   describe '#cite' do

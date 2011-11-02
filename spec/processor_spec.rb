@@ -40,7 +40,11 @@ describe RCite::Processor do
     before(:each) do
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
-      @pro.style.stub :cite_article => "Article cited!"
+      @pro.style.stub(:cite_article) { $tmp = "Article cited!" }
+    end
+
+    after(:each) do
+      $tmp = nil
     end
 
     context "when the style and bib attributes are set correctly and a valid id is given" do
@@ -72,7 +76,11 @@ describe RCite::Processor do
     before(:each) do
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
-      @pro.style.stub :bib_article => "Article bib\'d!"
+      @pro.style.stub(:bib_article) { $tmp = "Article bib\'d!" }
+    end
+
+    after(:each) do
+      $tmp = nil
     end
 
     context "when the style and bib attributes are set correctly and a valid id is given" do

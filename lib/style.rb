@@ -17,10 +17,10 @@ module RCite
     #   `type`.
     # @return [String] The citation.
     def cite(text)
-      method = "cite_#{text[:type]}".to_s
+      method = "cite_#{text['type']}".to_s
       if !respond_to?(method)
         raise ArgumentError.new("This style does not define the type"+
-          "'#{text[:type]}'.")
+          "'#{text['type']}'.")
       end
       $text = text
       $tmp = ''
@@ -42,10 +42,10 @@ module RCite
     # @raise (see #cite)
     # @return [String] The bibliography entry.
     def bib(text)
-      method = "bib_#{text[:type]}".to_s
+      method = "bib_#{text['type']}".to_s
       if !respond_to?(method)
         raise ArgumentError.new("This style does not define the type"+
-          "'#{text[:type]}'.")
+          "'#{text['type']}'.")
       end
       $text = text
       $tmp = ''

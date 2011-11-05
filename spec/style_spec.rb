@@ -4,8 +4,8 @@ require 'rspec/mocks'
 describe RCite::Style do
 
   before(:all) do
-    @book_entry = {:type => :book}
-    @article_entry = {:type => :article}
+    @book_entry = {'type' => 'book'}
+    @article_entry = {'type' => 'article'}
   end
 
   before(:each) do

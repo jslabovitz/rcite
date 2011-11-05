@@ -8,7 +8,7 @@ describe RCite::Style do
   end
 
   it "should have helper methods for all the BibTeX fields" do
-    $text = { :crossref => 'refme!' }
+    $text = { 'crossref' => 'refme!' }
     @style.crossref.should == 'refme!'
   end
 
@@ -22,7 +22,7 @@ describe RCite::Style do
         end
 
         CustomStyle.new.defaults[:delim].should == '. '
-        CustomStyle.new.defaults[:et_al].should == 3
+        CustomStyle.new.defaults[:et_al].should == RCite::Style.new.defaults[:et_al]
       end
     end
   end
@@ -51,8 +51,8 @@ describe RCite::Style do
   describe '#year' do
     it "should return the year in which the current text was published" do
       text = {
-        :id => 'book1',
-        :issued => { 'date-parts' => [[2011,3]] }
+        'id' => 'book1',
+        'issued' => { 'date-parts' => [[2011,3]] }
       }
       $text = text
       @style.year.should == "2011"
@@ -62,8 +62,8 @@ describe RCite::Style do
   describe '#month' do
     it "should return the month in which the current text was published" do
       text = {
-        :id => 'book1',
-        :issued => { 'date-parts' => [[2011,3]] }
+        'id' => 'book1',
+        'issued' => { 'date-parts' => [[2011,3]] }
       }
       $text = text
       @style.month.should == "3"
@@ -78,8 +78,8 @@ describe RCite::Style do
     
     before(:each) do
       @list = [
-        { :family => 'Limperg', :dropping_particle => 'von', :given => 'Jannis' },
-        { :family => 'Otto', :given => 'Kai' }
+        { 'family' => 'Limperg', 'dropping_particle' => 'von', 'given' => 'Jannis' },
+        { 'family' => 'Otto', 'given' => 'Kai' }
       ]
     end
     
@@ -98,8 +98,8 @@ describe RCite::Style do
         ordering = :last_first
         delim = '; '
 
-        @list[0][:given] = nil
-        @list[1][:given] = nil
+        @list[0]['given'] = nil
+        @list[1]['given'] = nil
         @style.send(@method, @list, :ordering => ordering, :delim => delim).should ==
           "von Limperg; Otto"
       end

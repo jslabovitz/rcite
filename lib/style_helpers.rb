@@ -26,9 +26,9 @@ module RCite
     # These fields can be accessed through helper methods that are each
     # named just as their respective field. Other fields that may also
     # be defined in the BibTeX document can only be accessed directly via
-    # the hash, e.g. `$text[:unusual_field]`.
+    # the hash, e.g. `$text['unusual_field']`.
     FIELDS = %w{
-      address
+      publisher-place
       annote
       author
       booktitle
@@ -38,27 +38,35 @@ module RCite
       editor
       howpublished
       institution
-      journal
+      container-title
       key
       month
       note
-      number
+      issue
       organization
-      pages
+      page
       publisher
       school
-      series
+      collection-title
       title
       type
       volume
       year
     }
 
+
     FIELDS.each do |f|
-      define_method("#{f}") do
-        $text[f.to_sym]
+      define_method("#{f.gsub("-", "_")}") do
+        $text[f.to_s]
       end
     end
+
+    alias address publisher_place
+    alias journal container_title
+    alias series collection_title
+    alias number issue
+    alias pages page
+
 
     # Loads the default options. Style authors may define the method `default`
     # which should return an options hash (see {#defaults}). If they do so,
@@ -103,7 +111,7 @@ module RCite
     # @return [String, nil] The list of authors, or `nil` if the bibliographic
     #   data for this text defines none.
     def authors(options = {})
-      authors_or_editors($text[:author], options)
+      authors_or_editors($text['author'], options)
     end
 
     alias author authors
@@ -115,7 +123,7 @@ module RCite
     # @return [String,nil] The list of editors, or `nil` if the bibliographic
     #   data for this text defines none.
     def editors(options = {})
-      authors_or_editors($text[:editor], options)
+      authors_or_editors($text['editor'], options)
     end
 
     alias editor editors
@@ -124,7 +132,7 @@ module RCite
     #
     # @return [String, nil] The year, or `nil` if it is not defined.
     def year
-      $text[:issued]['date-parts'][0][0].to_s
+      $text['issued']['date-parts'][0][0].to_s
     end
 
     alias issued_year year
@@ -133,7 +141,7 @@ module RCite
     #
     # @return [String, nil] The month, or `nil` if it is not defined.
     def month
-      $text[:issued]['date-parts'][0][1].to_s
+      $text['issued']['date-parts'][0][1].to_s
     end
 
     alias issued_month month
@@ -150,11 +158,11 @@ module RCite
         string = ''
         case options[:ordering]
           when :last_first
-            string << list([person[:dropping_particle], person[:family]], " ")
-            string << ", #{person[:given]}" if person[:given]
+            string << list([person['dropping_particle'], person['family']], " ")
+            string << ", #{person['given']}" if person['given']
           when :first_last
-            string << list([person[:given], person[:dropping_particle], \
-                            person[:family]], " ")
+            string << list([person['given'], person['dropping_particle'], \
+                            person['family']], " ")
         end
         string
       end

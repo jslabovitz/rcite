@@ -4,9 +4,9 @@ require 'rspec/mocks'
 
 describe RCite::Processor do
 
-  VALID_STYLE_FILE = 'files/valid_style.rb'
-  WRONG_CLASSNAME_STYLE_FILE = 'files/wrong_classname.rb'
-  NO_STYLE_METHODS_STYLE_FILE = 'files/no_methods.rb'
+  VALID_STYLE_FILE = 'spec/files/valid_style.rb'
+  WRONG_CLASSNAME_STYLE_FILE = 'spec/files/wrong_classname.rb'
+  NO_STYLE_METHODS_STYLE_FILE = 'spec/files/no_methods.rb'
 
   before(:all) do
     @pro = RCite::Processor.new
@@ -33,7 +33,7 @@ describe RCite::Processor do
     end
   end
 
-  BIB_HASH = [{:id => 'article1', :type => 'article'}]
+  BIB_HASH = [{'id' => 'article1', 'type' => 'article'}]
 
   describe '#cite' do
 
@@ -41,6 +41,7 @@ describe RCite::Processor do
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
       @pro.style.stub(:cite_article) { $tmp = "Article cited!" }
+      BIB_HASH.stub(:to_citeproc) { BIB_HASH }
     end
 
     after(:each) do
@@ -49,7 +50,7 @@ describe RCite::Processor do
 
     context "when the style and bib attributes are set correctly and a valid id is given" do
       it "should generate a citation based on the current style" do
-        @pro.cite(:article1).should == "Article cited!"
+        @pro.cite('article1').should == "Article cited!"
       end
     end
 
@@ -74,6 +75,7 @@ describe RCite::Processor do
   describe '#bib' do
 
     before(:each) do
+      BIB_HASH.stub(:to_citeproc) { BIB_HASH }
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
       @pro.style.stub(:bib_article) { $tmp = "Article bib\'d!" }

@@ -1,4 +1,5 @@
 require 'style'
+require 'bibtex'
 
 module RCite
 
@@ -40,7 +41,7 @@ module RCite
     #   provide the {RCite::Style#bib} and {RCite::Style#cite} methods.
     def load_style(file)
       # Load the file content
-      require "#{file}" 
+      require "#{File.absolute_path(file)}" 
 
       # Guess the style's classname from the filename. The following
       # chain of operations determines the given file's basename, strips
@@ -83,7 +84,7 @@ module RCite
 
       text = find_text(id)
       if text
-        @style.cite(text)    
+        @style.cite(text)
       else
         raise ArgumentError.new "No text with id #{id} found."
       end
@@ -119,7 +120,7 @@ module RCite
     #   {BibTeX::Entry#to_citeproc}, or nil if a text with given id
     #   was not found.
     def find_text(id)
-      text = @bibliography.select {|o| o[:id] == id.to_s}
+      text = @bibliography.to_citeproc.select {|o| o['id'] == id.to_s}
       text ? text[0] : nil
     end
 

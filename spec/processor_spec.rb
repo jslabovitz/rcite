@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'processor'
 require 'style'
 require 'rspec/mocks'

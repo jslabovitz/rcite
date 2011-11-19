@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'style'
 require 'style_helpers'
 

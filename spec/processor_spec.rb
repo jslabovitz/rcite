@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'processor'
 require 'style'
+require 'style_helpers'
 require 'rspec/mocks'
 
 describe RCite::Processor do
@@ -8,6 +9,7 @@ describe RCite::Processor do
   VALID_STYLE_FILE = 'spec/files/valid_style.rb'
   WRONG_CLASSNAME_STYLE_FILE = 'spec/files/wrong_classname.rb'
   NO_STYLE_METHODS_STYLE_FILE = 'spec/files/no_methods.rb'
+  VALID_BIB_FILE = 'spec/files/all_types.bib'
 
   before(:all) do
     @pro = RCite::Processor.new
@@ -31,6 +33,13 @@ describe RCite::Processor do
       it "should raise an ArgumentError" do
         expect { @pro.load_style(NO_STYLE_METHODS_STYLE_FILE) }.to raise_error ArgumentError
       end
+    end
+  end
+
+  describe '#load_data' do
+    it "should load bibliography data as BibTeX::Bibliography#open does" do
+      @pro.load_data(VALID_BIB_FILE)
+      @pro.bibliography['article1']['title'].should == "Ein Artikel"
     end
   end
 

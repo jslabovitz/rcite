@@ -57,6 +57,12 @@ describe RCite::Style do
     end
   end
 
+  describe "#sep" do
+    it "should return an Element of type :sep with the desired content" do
+      @style.sep(', ').should == Element.new(:sep, ', ')
+    end
+  end
+
   describe '#year' do
     it "should return the year in which the current text was published" do
       $text = {

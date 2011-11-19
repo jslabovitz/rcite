@@ -154,7 +154,7 @@ module RCite
       return if list == nil
       merge_defaults(options)
 
-      list.map! do |person|
+      list = list.map do |person|
         string = ''
         case options[:ordering]
           when :last_first

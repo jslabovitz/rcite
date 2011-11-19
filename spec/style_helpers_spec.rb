@@ -30,21 +30,29 @@ describe RCite::Style do
 
   describe '#add' do
     after(:each) do
-      $tmp = nil
+      $tmp = []
     end
 
     context "when it is passed any number of strings" do
-      it "should add these strings to the $tmp global variable" do
+      it "should convert these strings to Elements and add them to $tmp" do
+        result = [
+          RCite::Element.new(:con, "A string"),
+          RCite::Element.new(:con, "AnotherString"),
+          RCite::Element.new(:con, " "),
+        ]
         @style.add("A string", "AnotherString", " ")
-        $tmp.should == "A stringAnotherString "
+        $tmp.should == result
       end
     end
 
-    context "when the first value it is passed is nil or an empty string" do
-      it "should return without doing anything" do
-        @style.add(nil, "a string", "another string")
-        @style.add('', 'yet another string')
-        $tmp.should == nil
+    context "when it is passed any number of Elements" do
+      it "should add the Elements to $tmp" do
+        el1 = RCite::Element.new(:con, "A string")
+        el2 = RCite::Element.new(:sep, "A seperator")
+        el3 = RCite::Element.new(:con, "Another string")
+        $tmp = [ el1 ]
+        @style.add(el2, el3)
+        $tmp.should == [ el1, el2, el3 ]
       end
     end
   end

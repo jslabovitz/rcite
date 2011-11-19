@@ -1,3 +1,5 @@
+require 'element'
+
 module RCite
   class Style
 
@@ -76,19 +78,26 @@ module RCite
     def initialize
       @defaults = methods.include?(:default) ? default : {}
       @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
-      $tmp = ''
+      $tmp = []
     end
 
-    # Adds the specified `strings` to the global variable `$tmp`.
-    # If the first string is `nil` or empty, the method returns and does not
-    # append *anything*. This behaviour was chosen so that in most circumstances
-    # one can append a BibTeX field and the corresponding delimiter(s) without
-    # bothering whether the field is actually set.
+    # Adds the specified `elements` to the global variable `$tmp`. Each
+    # element can be either a `String` or an `Element`. `String`s are
+    # converted to `Elements` of type `:con` before appending.
     #
-    # @param [String] strings Any number of strings that should be joined
-    #   together and appended to `$tmp`.
-    def add(*strings)
-      $tmp << strings.join if !strings.empty? && strings[0] && strings[0] != ''
+    # @param [RCite::Element,String] elements Any number of elements or strings
+    #   that should be appended to $tmp.
+    def add(*elements)
+      elements.map! do |e|
+        if e.is_a? RCite::Element
+          result = e
+        else
+          result = RCite::Element.new(:con, e)
+        end
+        result
+      end
+
+      $tmp.concat elements
     end
 
     # Returns a list of all authors of the given text if any are defined.

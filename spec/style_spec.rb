@@ -16,14 +16,46 @@ describe RCite::Style do
     # methods in order to define how certain types of
     # texts should be cited in a text/footnote and in the
     # bibliography.
-    @style.stub(:cite_book) { $tmp = 'book cited!' if $text }
-    @style.stub(:bib_book) { $tmp = 'book bib\'d!' if $text }
+    @citation_array = [
+      RCite::Element.new(:con, "content1"),
+      RCite::Element.new(:sep, "seperator"),
+      RCite::Element.new(:con, "content2"),
+    ]
+    @style.stub(:cite_book) { $tmp = @citation_array if $text }
+    @style.stub(:bib_book) { $tmp = @citation_array if $text }
   end
 
   describe '#cite' do
     context "when called for an entry with known type" do
-      it "should call the style's method #cite_type" do
-        @style.cite(@book_entry).should == 'book cited!'
+      it "should call the style's method #cite_type and convert the returned "+
+        "array of Elements to the corresponding string" do
+        @style.cite(@book_entry).should == "content1seperatorcontent2"
+      end
+    end
+
+    context "when the Elements array contains a seperator without preceding content" do
+      it "should omit the seperator" do
+        @citation_array = @citation_array[1..2]
+        @style.cite(@book_entry).should == "content2"
+      end
+    end
+
+    context "when the Elements array contains a seperator without following content" do
+      it "should omit the seperator" do
+        @citation_array = @citation_array[0..1]
+        @style.cite(@book_entry).should == "content1"
+      end
+    end
+
+    context "when the Elements array contains two seperators in a row" do
+      it "should omit the second one" do
+        @citation_array = [
+          RCite::Element.new(:con, "content1"),
+          RCite::Element.new(:sep, "seperator1"),
+          RCite::Element.new(:sep, "seperator2"),
+          RCite::Element.new(:con, "content2"),
+        ]
+        @style.cite(@book_entry).should == "content1seperator1content2"
       end
     end
 
@@ -37,7 +69,7 @@ describe RCite::Style do
   describe '#bib' do
     context "when called for an entry with known type" do
       it "should call the style's method #bib_type" do
-        @style.bib(@book_entry).should == 'book bib\'d!'
+        @style.bib(@book_entry).should == 'content1seperatorcontent2'
       end
     end
 

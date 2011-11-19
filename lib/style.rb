@@ -23,13 +23,13 @@ module RCite
           "'#{text['type']}'.")
       end
       $text = text
-      $tmp = ''
+      $tmp = []
       begin
         send(method, text)
       ensure
         $text = nil
       end
-      $tmp
+      elements_to_string($tmp)
     end
     
     # Generates a bibliography entry for the given `text`. This method dynamically
@@ -48,14 +48,46 @@ module RCite
           "'#{text['type']}'.")
       end
       $text = text
-      $tmp = ''
+      $tmp = []
       begin
         send(method, text) 
       ensure
         $text = nil
       end
-      $tmp
+      elements_to_string($tmp)
     end
 
+    #################################BEGIN PRIVATE##############################
+
+    private
+
+    # Concatenates Element contents to one string. If the element is of type
+    # `:con`, its content is immediately appended to the string. If it is of type
+    # `:sep`, the following rules apply:
+    #
+    # 1. If the element is the first item in the list, it is dropped.
+    # 2. If the element is the last item in the list, it is dropped.
+    # 3. If the preceding element is a seperator as well, the current element is
+    #    dropped.
+    # 4. Otherwise it is appended to the string.
+    #
+    # @param [Array<Element>] elements An array of Element objects.
+    # @return [String] A string constructed by omitting useless seperator elements
+    #   and concatenating the rest together.
+    def elements_to_string(elements)
+      string = ''
+      elements.each_index do |i|
+        e = elements[i]
+        if e.type == :sep
+          if i != 0 && i != elements.size-1 && elements[i-1].type != :sep && \
+             elements[i-1].content != nil && elements[i-1].content != ''
+            string << e.content if e.content
+          end
+        else
+          string << e.content if e.content
+        end
+      end
+      string
+    end
   end
 end

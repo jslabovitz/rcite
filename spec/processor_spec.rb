@@ -44,13 +44,18 @@ describe RCite::Processor do
   end
 
   BIB_HASH = [{'id' => 'article1', 'type' => 'article'}]
+  ELEMENTS = [
+    RCite::Element.new(:con, "something"),
+    RCite::Element.new(:sep, "somesep"),
+    RCite::Element.new(:con, "someotherthing"),
+  ]
 
   describe '#cite' do
 
     before(:each) do
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
-      @pro.style.stub(:cite_article) { $tmp = "Article cited!" }
+      @pro.style.stub(:cite_article) { $tmp = ELEMENTS }
       BIB_HASH.stub(:to_citeproc) { BIB_HASH }
     end
 
@@ -60,7 +65,7 @@ describe RCite::Processor do
 
     context "when the style and bib attributes are set correctly and a valid id is given" do
       it "should generate a citation based on the current style" do
-        @pro.cite('article1').should == "Article cited!"
+        @pro.cite('article1').should == "somethingsomesepsomeotherthing"
       end
     end
 
@@ -88,7 +93,7 @@ describe RCite::Processor do
       BIB_HASH.stub(:to_citeproc) { BIB_HASH }
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
-      @pro.style.stub(:bib_article) { $tmp = "Article bib\'d!" }
+      @pro.style.stub(:bib_article) { $tmp = ELEMENTS }
     end
 
     after(:each) do
@@ -97,7 +102,7 @@ describe RCite::Processor do
 
     context "when the style and bib attributes are set correctly and a valid id is given" do
       it "should generate a bibliography entry based on the current style" do
-        @pro.bib(:article1).should == "Article bib\'d!"
+        @pro.bib(:article1).should == 'somethingsomesepsomeotherthing'
       end
     end
 

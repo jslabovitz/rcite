@@ -25,7 +25,7 @@ module RCite
       $text = text
       $tmp = []
       begin
-        send(method, text)
+        send(method)
       ensure
         $text = nil
       end
@@ -50,7 +50,7 @@ module RCite
       $text = text
       $tmp = []
       begin
-        send(method, text) 
+        send(method) 
       ensure
         $text = nil
       end

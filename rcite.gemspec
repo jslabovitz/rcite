@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.description = "RCite parses BibTeX files and generates citations as well"+
     " as bibliography entries based on styles. Its key feature is the simple"+
     " style syntax that sets it apart from BibTeX, BibLaTeX and CSL."
+  s.license     = ['MIT']
 
   s.authors     = ["Jannis Limperg"]
   s.email       = 'jannis.limperg@arcor.de'

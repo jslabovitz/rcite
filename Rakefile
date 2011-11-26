@@ -20,3 +20,16 @@ task :cov do |t|
     end
   end
 end
+
+# Debug task. Checks if I've forgotten a debug statement somewhere.
+task :debug do |t|
+  Dir['**/*.rb'].each do |f|
+    File.open(File.join(File.dirname(__FILE__), f), 'r') do |file|
+      ct = 1
+      file.each do |line|
+        fail("DEBUG in file #{f}, line #{ct}.\n#{line}") if line =~ /DEBUG/
+        ct.next
+      end
+    end
+  end
+end

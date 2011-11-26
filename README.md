@@ -64,14 +64,36 @@ See the [Style Guide](StyleGuide).
 
 Please do! I'm actually pretty much of a Ruby noob so don't hesitate to fix
 my mistakes. ;) RCite is at the moment lacking quite a number of major
-features which can partly be found in the issue tracker on Github.
+features which can partly be found in the 
+[issue tracker on Github](https://github.com/JLimperg/rcite/issues).
 
 Please take care, though, that your pull request/patch does not break the
 spec examples and that it is itself thoroughly spec'ed and documented. I am
 going for 100% code and documentation coverage, therefore it'd be cool if you
-could do so as well.
+could do so as well. Bonus points for topic branches.
+
+### Testing
+
+After having installed RCite (including the development dependencies), run the
+following command:
+
+    rake spec
+
+### Documentation
+
+Documentation can be generated in `./doc` using
+
+    rake doc
+
+Please do not use plain RDoc but rather YARD, otherwise things will probably
+look strange.
+
+### Bugs and Feature Requests
+
+Please head to the
+[issue tracker on Github](https://github.com/JLimperg/rcite/issues).
 
 ## License
 
-RCite is licensed under the MIT license, a copy of which you can find in the
+RCite is licensed under the MIT license, a copy of which can be found in the
 [LICENSE](LICENSE) file.

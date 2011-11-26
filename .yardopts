@@ -1,1 +1,1 @@
--m markdown -r README --files styles/teststyle.rb,LICENSE,StyleGuide
+-m markdown -r README.md --files styles/teststyle.rb,LICENSE,StyleGuide

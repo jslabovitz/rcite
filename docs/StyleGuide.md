@@ -26,8 +26,12 @@ and `SomeStyle` corresponds to `some_style.rb`.
 
 Our style does not yet do anything, so we will have to tell it what to do with
 all sorts of texts. RCite handles citations according to BibTeX types
-(@article, @book, @misc etc.)[^1], assuming that an `article` will probably be
+(@article, @book, @misc etc.), assuming that an `article` will probably be
 processed differently than a `book`.
+
+<small>Actually you can simply define your own types by creating the appropriate
+methods and using the type in your BibTeX file. For example, as I currently
+study laws, I will probably define some sort of `@commentary` type.</small>
 
 Each BibTeX type corresponds to two methods in the style file: **`bib_type`**
 and **`cite_type`**. The former is used to generate a bibliography entry for
@@ -68,8 +72,8 @@ This will probably become clear by looking at an example of a `cite_book` method
     end
 
 **Note that any literal text which should appear in the citation must be
-enclosed in double quotes!**[^2] Most commonly, this will apply to seperators
-(see below).
+enclosed in double or single quotes!** Most commonly, this will apply to
+seperators (see below).
 
 This method would create a citation like the following:
 
@@ -77,7 +81,8 @@ This method would create a citation like the following:
 
 I have marked each part of the citation that corresponds to one `add` command
 in the `cite_book` method above with curly braces, so it should be
-clear how things work. Each standard BibTeX field[^3] can be accessed by its name
+clear how things work. Each standard BibTeX field (see
+{RCite::Style::FIELDS this list}) can be accessed by its name
 (`author`, `editor`, `title` etc.) and added to the citation/bibliography entry
 by using `add`. Now, what does the `add sep` mean in comparison to
 the simple `add`?
@@ -200,14 +205,3 @@ defined in the bibliography file, the list would look like
 
 `:et_al_string` can be any text that should be appended to the list if it is
 shortened because there are too many authors/editors.
-
---------------------------------------------------------------------------------
-
-[^1]: Actually you can simply define your own types by creating the appropriate
-      methods and using the type in your BibTeX file. For example, as I currently
-      study laws, I will probably define some sort of `@commentary` type.
-
-[^2]: Single quotes also work.
-
-[^3]: For a list of all fields that are supported, see
-      {RCite::Style::FIELDS this list}.

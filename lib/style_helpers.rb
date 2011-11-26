@@ -28,32 +28,46 @@ module RCite
     # These fields can be accessed through helper methods that are each
     # named just as their respective field. Other fields that may also
     # be defined in the BibTeX document can only be accessed directly via
-    # the hash, e.g. `$text['unusual_field']`.
+    # the hash, e.g. `$text['unusual_field']`. Fields that are named differently
+    # in CSL and BibTeX are noted in their CSL variant here but can also be
+    # accessed by their BibTeX name, as shown in the following table:
+    #
+    #     | BibTeX    | CSL              | 
+    #     |:----------------------------:|
+    #     | address   | publisher-place  |
+    #     | journal   | container-title  |
+    #     | series    | collection-title |
+    #     | number    | issue            |
+    #     | pages     | page             |
+    #
+    # Note that fields which contain dashes correspond to methods with
+    # underscores instead. F.ex. `publisher-place` becomes `#publisher_place`.
+    #
+    # In addition to the fields defined here, this class provides helper methods
+    # for a few more complex ones, such as `author`, `editor` and `year`. See
+    # the instance methods for details.
+
     FIELDS = %w{
-      publisher-place
       annote
-      author
       booktitle
       chapter
+      collection-title
+      container-title
       crossref
       edition
-      editor
       howpublished
       institution
-      container-title
-      key
-      month
-      note
       issue
+      key
+      note
       organization
       page
       publisher
+      publisher-place
       school
-      collection-title
       title
       type
       volume
-      year
     }
 
 

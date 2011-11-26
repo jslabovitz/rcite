@@ -4,7 +4,7 @@ Creating and modifying an RCite style is very easy -- after all, that is what
 it was designed for. A style basically consists of four things: The framework,
 the type methods, the `add` command and the `sep` command.
 
-For an example of a working style, see the [Teststyle](styles/teststyle.rb).
+For an example of a working style, see the {file:styles/teststyle.rb Teststyle}.
 
 ## Framework
 
@@ -208,5 +208,6 @@ shortened because there are too many authors/editors.
       study laws, I will probably define some sort of `@commentary` type.
 
 [^2]: Single quotes also work.
-[^3]: [List of all supported fields.](
-      http://localhost:10000/docs/RCite/Style#FIELDS-constant)
+
+[^3]: For a list of all fields that are supported, see
+      {RCite::Style::FIELDS this list}.

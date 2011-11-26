@@ -12,7 +12,7 @@ and [CSL](http://citationstyles.org/).
 
 The existing solutions mentioned above all have one flaw in common: It is
 utterly cumbersome to create or edit styles. BibTeX style syntax is extremely
-hard to learn; BibLaTeX suffers from the fact that LaTeX itself is somewhat 
+hard to learn; BibLaTeX suffers from the fact that LaTeX itself is somewhat
 a hybrid between programming and markup language; and CSL uses XML to create
 styles in a not very intuitive manner.
 
@@ -58,8 +58,7 @@ used as follows:
 
 ## Creating and Editing Styles
 
-See the
-[Style Guide](http://rubydoc.info/github/JLimperg/rcite/master/file/StyleGuide).
+See the {file:docs/StyleGuide.md Style Guide}.
 
 ## Contributing
 
@@ -97,4 +96,4 @@ Please head to the
 ## License
 
 RCite is licensed under the MIT license, a copy of which can be found in the
-[LICENSE](http://rubydoc.info/github/JLimperg/rcite/master/file/LICENSE) file.
+{file:LICENSE LICENSE} file.

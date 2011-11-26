@@ -1,1 +1,7 @@
--m markdown -r README.md --files styles/teststyle.rb,LICENSE,StyleGuide
+-m markdown
+-r docs/README
+--title "RCite Documentation"
+-
+styles/teststyle.rb
+LICENSE
+docs/StyleGuide.md

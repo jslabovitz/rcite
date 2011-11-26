@@ -3,3 +3,5 @@ doc
 **/*.swp
 *.swp
 coverage
+Gemfile.lock
+rcite-*.gem

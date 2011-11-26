@@ -1,4 +1,4 @@
-require 'style'
+require 'rcite/style'
 require 'bibtex'
 
 module RCite

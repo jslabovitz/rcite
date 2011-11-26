@@ -1,3 +1,6 @@
+# Load path
+$: << './lib/rcite/'
+
 # SimpleCov configuration
 require 'simplecov'
 

@@ -1,4 +1,4 @@
-require 'element'
+require 'rcite/element'
 
 module RCite
   class Style

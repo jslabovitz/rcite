@@ -1,11 +1,7 @@
 #!/usr/bin/env ruby
 
-$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
-
-require 'processor'
-require 'style'
-require 'style_helpers'
 require 'slop'
+require 'rcite'
 
 def cite(id)
   load_data
@@ -55,6 +51,4 @@ def check_req_opts(opts)
   raise "Please submit a bibliography file using -b|--bib" unless opts.bib?
 end
 
-if __FILE__ == $0
-  main
-end
+main

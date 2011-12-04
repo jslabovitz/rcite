@@ -1,370 +1,231 @@
 --- 
-- id: article1
-  type: article-journal
-  author: 
-  - family: Limperg
-    given: Jannis Benedikt
-    dropping-particle: von
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  container-title: NJW
-  volume: "120"
-  collection-title: "12"
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: article2
-  type: article-journal
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  container-title: NJW
-  issue: "1200"
-  collection-title: "12"
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: book1
-  type: book
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  publisher: Suhrkamp
-  volume: "120"
-  collection-title: "12"
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: book2
-  type: book
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  title: Ein Artikel
-  publisher: Suhrkamp
-  issue: "1200"
-  collection-title: "12"
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: booklet1
-  type: pamphlet
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  howpublished: gar nicht
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: inbook1
-  type: chapter
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  publisher: Suhrkamp
-  chapter: "2"
-  page: 120--1200
-  volume: "120"
-  collection-title: "12"
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: inbook2
-  type: chapter
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  title: Ein Artikel
-  publisher: Suhrkamp
-  chapter: "2"
-  page: 120--1200
-  issue: "1200"
-  collection-title: "12"
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: incollection1
-  type: useless incollection
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  container-title: Theorie der Gesellschaft
-  publisher: Suhrkamp
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  volume: "120"
-  collection-title: "12"
-  chapter: "2"
-  page: 120--1200
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: incollection2
-  type: useless incollection
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  container-title: Theorie der Gesellschaft
-  publisher: Suhrkamp
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  issue: "1200"
-  collection-title: "12"
-  chapter: "2"
-  page: 120--1200
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: inproceedings1
-  type: paper-conference
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  container-title: Theorie der Gesellschaft
-  publisher: Suhrkamp
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  volume: "120"
-  collection-title: "12"
-  page: 120--1200
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  organization: akj freiburg
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: inproceedings2
-  type: paper-conference
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  container-title: Theorie der Gesellschaft
-  publisher: Suhrkamp
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  issue: "1200"
-  collection-title: "12"
-  page: 120--1200
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  organization: akj freiburg
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: manual1
-  type: book
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  organization: akj freiburg
-  publisher-place: Freiburg
-  edition: 5. Aufl.
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: mastersthesis1
-  type: useless mastersthesis
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  title: Ein Artikel
-  school: Uni Freiburg
-  note: "unn\xC3\xB6tig!"
-  publisher-place: Freiburg
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: misc1
-  type: article
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  howpublished: gar nicht
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: phdthesis1
-  type: useless mastersthesis
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  school: Uni Freiburg
-  note: "unn\xC3\xB6tig!"
-  publisher-place: Freiburg
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: proceedings1
-  type: paper-conference
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  institution: akj freiburg
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  volume: "120"
-  collection-title: "12"
-  publisher-place: Freiburg
-  organization: akj freiburg
-  publisher: Suhrkamp
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: proceedings2
-  type: paper-conference
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  institution: akj freiburg
-  editor: 
-  - family: Limperg
-    given: Bettina
-  - family: Limperg
-    given: Michael
-  issue: "1200"
-  collection-title: "12"
-  publisher-place: Freiburg
-  organization: akj freiburg
-  publisher: Suhrkamp
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: techreport1
-  type: useless techreport
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  institution: akj freiburg
-  publisher-place: Freiburg
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
-- id: unpublished1
-  type: manuscript
-  title: Ein Artikel
-  author: 
-  - family: Limperg
-    given: Jannis
-  - family: Otto
-    given: Kai
-  note: "unn\xC3\xB6tig!"
-  issued: 
-    date-parts: 
-    - - 2011
-      - 3
+- :key: article1
+  :type: :article
+  :author: "{von Limperg, Jannis Benedikt and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :journal: "{NJW}"
+  :year: "{2011}"
+  :month: "{mar}"
+  :volume: "{120}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: article2
+  :type: :article
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :journal: "{NJW}"
+  :year: "{2011}"
+  :month: "{mar}"
+  :number: "{1200}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: book1
+  :type: :book
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :volume: "{120}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: book2
+  :type: :book
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :title: "{Ein Artikel}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :number: "{1200}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: booklet1
+  :type: :booklet
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :year: "{2011}"
+  :note: "{unn\xC3\xB6tig!}"
+  :howpublished: "{gar nicht}"
+- :key: inbook1
+  :type: :inbook
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :chapter: "{2}"
+  :pages: "{120--1200}"
+  :volume: "{120}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: inbook2
+  :type: :inbook
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :title: "{Ein Artikel}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :chapter: "{2}"
+  :pages: "{120--1200}"
+  :number: "{1200}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: incollection1
+  :type: "{useless incollection}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :booktitle: "{Theorie der Gesellschaft}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :volume: "{120}"
+  :series: "{12}"
+  :chapter: "{2}"
+  :pages: "{120--1200}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: incollection2
+  :type: "{useless incollection}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :booktitle: "{Theorie der Gesellschaft}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :number: "{1200}"
+  :series: "{12}"
+  :chapter: "{2}"
+  :pages: "{120--1200}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: inproceedings1
+  :type: :inproceedings
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :booktitle: "{Theorie der Gesellschaft}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :volume: "{120}"
+  :series: "{12}"
+  :pages: "{120--1200}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+  :organization: "{akj freiburg}"
+- :key: inproceedings2
+  :type: :inproceedings
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :booktitle: "{Theorie der Gesellschaft}"
+  :publisher: "{Suhrkamp}"
+  :year: "{2011}"
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :number: "{1200}"
+  :series: "{12}"
+  :pages: "{120--1200}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+  :organization: "{akj freiburg}"
+- :key: manual1
+  :type: :manual
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :organization: "{akj freiburg}"
+  :address: "{Freiburg}"
+  :edition: "{5. Aufl.}"
+  :month: "{mar}"
+  :year: "{2011}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: mastersthesis1
+  :type: "{useless mastersthesis}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :title: "{Ein Artikel}"
+  :school: "{Uni Freiburg}"
+  :year: "{2011}"
+  :note: "{unn\xC3\xB6tig!}"
+  :month: "{mar}"
+  :address: "{Freiburg}"
+- :key: misc1
+  :type: :misc
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :howpublished: "{gar nicht}"
+  :year: "{2011}"
+  :note: "{unn\xC3\xB6tig!}"
+  :month: "{mar}"
+- :key: phdthesis1
+  :type: "{useless mastersthesis}"
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :school: "{Uni Freiburg}"
+  :year: "{2011}"
+  :note: "{unn\xC3\xB6tig!}"
+  :month: "{mar}"
+  :address: "{Freiburg}"
+- :key: proceedings1
+  :type: :proceedings
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :year: "{2011}"
+  :institution: "{akj freiburg}"
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :volume: "{120}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :month: "{mar}"
+  :organization: "{akj freiburg}"
+  :publisher: "{Suhrkamp}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: proceedings2
+  :type: :proceedings
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :year: "{2011}"
+  :institution: "{akj freiburg}"
+  :editor: "{Limperg, Bettina and Limperg, Michael}"
+  :number: "{1200}"
+  :series: "{12}"
+  :address: "{Freiburg}"
+  :month: "{mar}"
+  :organization: "{akj freiburg}"
+  :publisher: "{Suhrkamp}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: techreport1
+  :type: "{useless techreport}"
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :year: "{2011}"
+  :institution: "{akj freiburg}"
+  :address: "{Freiburg}"
+  :month: "{mar}"
+  :note: "{unn\xC3\xB6tig!}"
+- :key: unpublished1
+  :type: :unpublished
+  :title: "{Ein Artikel}"
+  :author: "{Limperg, Jannis and Otto, Kai}"
+  :note: "{unn\xC3\xB6tig!}"
+  :month: "{mar}"
+  :year: "{2011}"

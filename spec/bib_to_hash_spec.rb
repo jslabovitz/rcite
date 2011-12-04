@@ -15,6 +15,6 @@ describe "The translation from bib to hash" do
     File.open(ALL_TYPES_YML_FILE, "r") do |f|
       f.each { yaml << f.read }
     end
-    bib.to_citeproc.should == YAML.load(yaml).to_a
+    bib.to_a.should == YAML.load(yaml).to_a
   end
 end

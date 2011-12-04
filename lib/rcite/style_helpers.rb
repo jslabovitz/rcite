@@ -28,61 +28,43 @@ module RCite
     # These fields can be accessed through helper methods that are each
     # named just as their respective field. Other fields that may also
     # be defined in the BibTeX document can only be accessed directly via
-    # the hash, e.g. `$text['unusual_field']`. Fields that are named differently
-    # in CSL and BibTeX are noted in their CSL variant here but can also be
-    # accessed by their BibTeX name, as shown in the following table:
-    #
-    #     | BibTeX    | CSL              | 
-    #     |:----------------------------:|
-    #     | address   | publisher-place  |
-    #     | journal   | container-title  |
-    #     | series    | collection-title |
-    #     | number    | issue            |
-    #     | pages     | page             |
-    #
-    # Note that fields which contain dashes correspond to methods with
-    # underscores instead. F.ex. `publisher-place` becomes `#publisher_place`.
+    # the hash, e.g. `$text[:unusual_field]`.
     #
     # In addition to the fields defined here, this class provides helper methods
-    # for a few more complex ones, such as `author`, `editor` and `year`. See
-    # the instance methods for details.
+    # for the more complex {#author} and {#editor}.
+    # details.
 
     FIELDS = %w{
+      address
       annote
       booktitle
       chapter
-      collection-title
-      container-title
       crossref
       edition
       howpublished
       institution
-      issue
+      journal
       key
+      month
       note
+      number
       organization
-      page
+      pages
       publisher
-      publisher-place
       school
+      series
       title
       type
       volume
+      year
     }
 
 
     FIELDS.each do |f|
-      define_method("#{f.gsub("-", "_")}") do
-        $text[f.to_s]
+      define_method(f) do
+        $text[f.to_sym]
       end
     end
-
-    alias address publisher_place
-    alias journal container_title
-    alias series collection_title
-    alias number issue
-    alias pages page
-
 
     # Loads the default options. Style authors may define the method `default`
     # which should return an options hash (see {#defaults}). If they do so,
@@ -99,7 +81,7 @@ module RCite
     # element can be either a `String` or an `Element`. `String`s are
     # converted to `Elements` of type `:con` before appending.
     #
-    # @param [RCite::Element,String] elements Any number of elements or strings
+    # @param [Element,String] elements Any number of elements or strings
     #   that should be appended to $tmp.
     def add(*elements)
       elements.map! do |e|
@@ -152,7 +134,7 @@ module RCite
     # @return [String, nil] The list of authors, or `nil` if the bibliographic
     #   data for this text defines none.
     def authors(options = {})
-      authors_or_editors($text['author'], options)
+      authors_or_editors($text[:author].to_names, options) if $text[:author]
     end
 
     alias author authors
@@ -164,28 +146,10 @@ module RCite
     # @return [String,nil] The list of editors, or `nil` if the bibliographic
     #   data for this text defines none.
     def editors(options = {})
-      authors_or_editors($text['editor'], options)
+      authors_or_editors($text[:editor].to_names, options) if $text[:editor]
     end
 
     alias editor editors
-
-    # Returns the year in which the text was issued.
-    #
-    # @return [String, nil] The year, or `nil` if it is not defined.
-    def year
-      $text['issued']['date-parts'][0][0].to_s
-    end
-
-    alias issued_year year
-
-    # Returns the month in which the text was issued.
-    #
-    # @return [String, nil] The month, or `nil` if it is not defined.
-    def month
-      $text['issued']['date-parts'][0][1].to_s
-    end
-
-    alias issued_month month
 
     #=========================== BEGIN PRIVATE ================================
 
@@ -199,11 +163,11 @@ module RCite
         string = ''
         case options[:ordering]
           when :last_first
-            string << list([person['dropping_particle'], person['family']], " ")
-            string << ", #{person['given']}" if person['given']
+            string << list([person.prefix, person.last], " ")
+            string << ", #{person.first}" if person.first
           when :first_last
-            string << list([person['given'], person['dropping_particle'], \
-                            person['family']], " ")
+            string << list([person.first, person.prefix, \
+                            person.last], " ")
         end
         string
       end

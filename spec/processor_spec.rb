@@ -43,7 +43,9 @@ describe RCite::Processor do
     end
   end
 
-  BIB_HASH = [{'id' => 'article1', 'type' => 'article'}]
+  BIB_HASH = BibTeX::Bibliography.new do |bib|
+    bib << BibTeX::Entry.new(:key => 'article1', :type => 'article')
+  end
   ELEMENTS = [
     RCite::Element.new(:con, "something"),
     RCite::Element.new(:sep, "somesep"),
@@ -56,7 +58,6 @@ describe RCite::Processor do
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
       @pro.style.stub(:cite_article) { $tmp = ELEMENTS }
-      BIB_HASH.stub(:to_citeproc) { BIB_HASH }
     end
 
     after(:each) do
@@ -90,7 +91,6 @@ describe RCite::Processor do
   describe '#bib' do
 
     before(:each) do
-      BIB_HASH.stub(:to_citeproc) { BIB_HASH }
       @pro.bibliography = BIB_HASH
       @pro.style = RCite::Style.new
       @pro.style.stub(:bib_article) { $tmp = ELEMENTS }

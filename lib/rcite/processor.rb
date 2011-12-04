@@ -6,7 +6,7 @@ module RCite
   # The `Processor` class is responsible for chaining the two steps involved
   # in creating a citation or bibliography together:
   #
-  # 1. Load a (BibTeX) file with bibliographic information about all the texts.
+  # 1. Load a BibTeX file with bibliographic information about all the texts.
   # 2. Load a style that defines how to construct citations and bibliography
   #    entries from the former.
   # 
@@ -15,14 +15,13 @@ module RCite
   class Processor
 
     # The style that is used to turn bibliographic data gathered from a
-    # (BibTeX) file to actual citations/bibliographic entries. Should
+    # BibTeX file to actual citations/bibliographic entries. Should
     # usually be a subclass of {RCite::Style}. Can be `nil` if no style
     # has been loaded yet.
     attr_accessor :style
 
-    # A hash with bibliographic data loaded from a (BibTeX) file, as returned
-    # by the bibtex-ruby gem's `BibTeX::Bibliography#to_citeproc`. Can be `nil` if
-    # no data file has been loaded yet.
+    # A `BibTeX::Bibliography` with bibliographic data loaded from a BibTeX
+    # file. Can be `nil` if no data file has been loaded yet.
     attr_accessor :bibliography
     
     # Loads a style file. The file must define a class with the same name as
@@ -36,6 +35,7 @@ module RCite
     #
     # @param [String] file Relative or absolute path of the file that should
     #   be loaded.
+    # @return [void]
     # @raise [ArgumentError] if the file does not define a class that matches
     #   the filename, or if the class that is defined there does not
     #   provide the {RCite::Style#bib} and {RCite::Style#cite} methods.
@@ -43,7 +43,7 @@ module RCite
       # Load the file content
       require "#{File.absolute_path(file)}" 
 
-      # Guess the style's classname from the filename. The following
+      # Guesses the style's classname from the filename. The following
       # chain of operations determines the given file's basename, strips
       # the .rb ending and camelizes the rest. The result should be the
       # name of the class that is defined in the file.
@@ -63,20 +63,25 @@ module RCite
       end
     end
 
-    # Loads the specified BibTeX file and sets {#bibliography} accordingly. This method
-    # is merely a wrapper for `BibTeX::Bibliography#open`.
+    # Loads the specified BibTeX file and sets {#bibliography} accordingly.
+    # This method is merely a wrapper for `BibTeX::Bibliography#open`.
+    #
+    # @param [String] file The BibTeX file that should be loaded.
+    # @return [BibTeX::Bibliography] The bibliography that has been loaded
+    #   from the style.
+    # @raise all errors that `BibTeX::Bibliography` raises.
     def load_data(file)
       @bibliography = BibTeX::Bibliography.open(file)
     end
 
-    # Generates a citation for the `text` with given `id`. This method searches the
-    # array of bibliographic data for a `text` with given `id` and -- if it happens
-    # to find one -- returns `@style.cite(text)`.
+    # Generates a citation for the `text` with given `id`. This method searches
+    # the {#bibliography} for a `text` where `:key == id` and -- if it
+    # happens to find one -- returns `@style.cite(text)`.
     #
-    # @param [Symbol] id The unique identifier set in the BibTeX file.
+    # @param [Symbol] id The unique identifier (key) set in the BibTeX file.
     # 
-    # @raise [ArgumentError] if {#style} or {#bibliography} are `nil`, or if there is no
-    #   text with given `id` in `bib`.
+    # @raise [ArgumentError] if {#style} or {#bibliography} are `nil`, or if
+    #   there is no text with given `id` in `bib`.
     #
     # @return [String] A citation for the given text.
     def cite(id)
@@ -90,9 +95,9 @@ module RCite
       end
     end
 
-    # Generates a bibliography entry for the `text` with given `id`. This method searches the
-    # array of bibliographic data for a `text` with given `id` and -- if it happens
-    # to find one -- returns `@style.bib(text)`.
+    # Generates a bibliography entry for the `text` with given `id`. This method
+    # searches the {#bibliography} for a `text` where `key == id` and -- if it
+    # happens to find one -- returns `@style.bib(text)`.
     #
     # @param (see #cite)
     #
@@ -116,12 +121,10 @@ module RCite
     #
     # @param (see #cite)
     #
-    # @return [Hash,nil] a Hash describing the text as returned by
-    #   {BibTeX::Entry#to_citeproc}, or nil if a text with given id
-    #   was not found.
+    # @return [Hash,nil] a `BibTeX::Entry` describing the text with given
+    #   `id`, or nil if a text with given id was not found.
     def find_text(id)
-      text = @bibliography.to_citeproc.select {|o| o['id'] == id.to_s}
-      text ? text[0] : nil
+      @bibliography[id]
     end
 
     # Checks if {#bibliography} and {#style} are defined (read: not `nil`).
@@ -129,7 +132,8 @@ module RCite
     # @raise [ArgumentError] if either is `nil`.
     def check_attrs
       raise ArgumentError.new "Please load a style first." unless @style
-      raise ArgumentError.new "Please load bibliographic data first." unless @bibliography
+      raise ArgumentError.new "Please load bibliographic data first." unless \
+        @bibliography
     end
   end
 end

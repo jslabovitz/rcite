@@ -1,6 +1,10 @@
 require 'rcite/style'
 require 'bibtex'
 
+# Temporary workaround for bug in bibtex-ruby.
+# See https://github.com/inukshuk/bibtex-ruby/issues/38
+BibTeX::Parser::Log = BibTeX.log
+
 module RCite
 
   # The `Processor` class is responsible for chaining the two steps involved

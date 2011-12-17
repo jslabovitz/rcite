@@ -112,7 +112,7 @@ if you use `add sep` for separators and `add` for fields.
 
 Sometimes you will, despite the magic of separators, want to test if a field
 is set and do something according to the result. This is where
-'`if ... else if ... else`' comes in handy.
+'`if ... elsif ... else`' comes in handy.
 
 Let's look at an example first:
 
@@ -120,7 +120,7 @@ Let's look at an example first:
       if author
         add author
         add sep ": "
-      else if editor
+      elsif editor
         add editor
         add sep " (Ed.): "
       else

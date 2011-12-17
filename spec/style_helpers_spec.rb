@@ -29,7 +29,7 @@ describe RCite::Style do
   end
 
   describe '#add' do
-    after(:each) do
+    before(:each) do
       $tmp = []
     end
 
@@ -53,6 +53,13 @@ describe RCite::Style do
         $tmp = [ el1 ]
         @style.add(el2, el3)
         $tmp.should == [ el1, el2, el3 ]
+      end
+    end
+
+    context "when it is passed an empty string" do
+      it "should not add it to $tmp" do
+        @style.add('')
+        $tmp.should == []
       end
     end
   end

@@ -17,7 +17,7 @@ module RCite
     #   `type`.
     # @return [String] The citation.
     def cite(text)
-      method = "cite_#{text.type}".to_s
+      method = "cite_#{text.type}"
       if !respond_to?(method)
         raise ArgumentError.new("This style does not define the type"+
           "' #{text.type}'.")
@@ -65,21 +65,29 @@ module RCite
     # `:con`, its content is immediately appended to the string. If it is of type
     # `:sep`, the following rules apply:
     #
-    # 1. If the element is the first item in the list, it is dropped.
-    # 2. If the element is the last item in the list, it is dropped.
-    # 3. If the preceding element is a seperator as well, the current element is
+    # 1. All seperators are removed from the tail of the index until a
+    #    content Element is encountered.
+    # 2. If the element is the first item in the list, it is dropped.
+    # 3. If the element is the last item in the list, it is dropped.
+    # 4. If the preceding element is a seperator as well, the current element is
     #    dropped.
-    # 4. Otherwise it is appended to the string.
+    # 5. Otherwise it is appended to the string.
     #
     # @param [Array<Element>] elements An array of Element objects.
     # @return [String] A string constructed by omitting useless seperator elements
     #   and concatenating the rest together.
     def elements_to_string(elements)
       string = ''
+      # Deletes the longest possible range of seperators from the end of
+      # the array.
+      elements = elements.reverse.drop_while {|e| e.type == :sep}
+      elements.reverse!.compact!
+
+      # Checks if the rest of the above rules are fulfilled.
       elements.each_index do |i|
         e = elements[i]
         if e.type == :sep
-          if i != 0 && i != elements.size-1 && elements[i-1].type != :sep && \
+          if i != 0 && elements[i-1].type != :sep && \
              elements[i-1].content != nil && elements[i-1].content != ''
             string << e.content if e.content
           end

@@ -79,21 +79,23 @@ module RCite
 
     # Adds the specified `elements` to the global variable `$tmp`. Each
     # element can be either a `String` or an `Element`. `String`s are
-    # converted to `Elements` of type `:con` before appending.
+    # converted to `Elements` of type `:con` before appending. `nil` arguments
+    # and empty strings are dropped.
     #
     # @param [Element,String] elements Any number of elements or strings
     #   that should be appended to $tmp.
     def add(*elements)
       elements.map! do |e|
         if e.is_a? RCite::Element
-          result = e
-        else
-          result = RCite::Element.new(:con, e)
+          e
+        elsif e && e.to_s == ''
+          nil
+        elsif e
+          RCite::Element.new(:con, e)
         end
-        result
       end
 
-      $tmp.concat elements
+      $tmp.concat elements.compact
     end
 
     # Defines a seperator element. This method is a very simple helper method

@@ -19,6 +19,7 @@ describe RCite::Style do
     @citation_array = [
       RCite::Element.new(:con, "content1"),
       RCite::Element.new(:sep, "seperator"),
+      RCite::Element.new(:sep, "seperator"),
       RCite::Element.new(:con, "content2"),
     ]
     @style.stub(:cite_book) { $tmp = @citation_array if $text }
@@ -35,14 +36,14 @@ describe RCite::Style do
 
     context "when the Elements array contains a seperator without preceding content" do
       it "should omit the seperator" do
-        @citation_array = @citation_array[1..2]
+        @citation_array = @citation_array[2..3]
         @style.cite(@book_entry).should == "content2"
       end
     end
 
-    context "when the Elements array contains a seperator without following content" do
-      it "should omit the seperator" do
-        @citation_array = @citation_array[0..1]
+    context "when the Elements array contains seperators without following content" do
+      it "should omit the seperators" do
+        @citation_array = @citation_array[0..2]
         @style.cite(@book_entry).should == "content1"
       end
     end

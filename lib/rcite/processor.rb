@@ -67,6 +67,20 @@ module RCite
       end
     end
 
+    # Temporary fix for missing feature in bibtex-ruby.
+    # See https://github.com/inukshuk/bibtex-ruby/issues/39
+    class MultilineFilter
+      # Removes all newline characters and following whitespace from
+      # multiline values, creating one single line.
+      #
+      # @param [BibTeX::Value] A value whose content is accessible via
+      #   `to_s`.
+      # @return [String] The value content, turned into a single line.
+      def apply(value)
+        value.to_s.gsub(/\n+\s*/m, " ")
+      end
+    end
+
     # Loads the specified BibTeX file and sets {#bibliography} accordingly.
     # This method is merely a wrapper for `BibTeX::Bibliography#open`.
     #
@@ -76,6 +90,15 @@ module RCite
     # @raise all errors that `BibTeX::Bibliography` raises.
     def load_data(file)
       @bibliography = BibTeX::Bibliography.open(file)
+
+      # Temporary fix for missing feature in bibtex-ruby.
+      # See https://github.com/inukshuk/bibtex-ruby/issues/39
+      filter = MultilineFilter.new
+      @bibliography.each do |entry|
+        if entry.is_a?(BibTeX::Entry)
+          entry.convert!(filter)
+        end
+      end
     end
 
     # Generates a citation for the `text` with given `id`. This method searches

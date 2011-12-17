@@ -1,5 +1,7 @@
 # Load path
+$: << './lib/'
 $: << './lib/rcite/'
+$: << './styles/'
 
 # SimpleCov configuration
 require 'simplecov'
@@ -11,4 +13,12 @@ SimpleCov.at_exit do
   end
 end
 
+SimpleCov.configure do
+  add_filter 'styles/'
+end
+
 SimpleCov.start
+
+def spec_text(text, result)
+  @pro.cite(text).should == result
+end

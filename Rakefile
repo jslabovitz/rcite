@@ -38,7 +38,7 @@ task :debug do |t|
       ct = 1
       file.each do |line|
         fail("DEBUG in file #{f}, line #{ct}.\n#{line}") if line =~ /DEBUG/
-        ct.next
+        ct += 1
       end
     end
   end

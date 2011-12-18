@@ -26,6 +26,21 @@ All the other public classes and methods belong to the programmer API.
 
 ## Released Versions
 
+Note that this file is not a changelog. Not every single commit is listed here
+but only the more important ones. Use `git log` to view all of them.
+
+Version 0.1.0
+
+* CHANGES PROGRAMMER API. Major updates:
+    * Global variables are turned into class variables. See 5af4a14
+    * Bibliography file entries are not represented by citeproc-format hashes
+      any more, but by BibTeX::Entry objects. See 1c096a7
+* Adds complete teststyle with spec.
+* Defines user and programmer APIs.
+* Multiline values are now turned into single lines.
+* Fixes a bug where unnecessary separators would be printed at the end of
+  a citation/bibliography entry under certain circumstances.
+
 Version 0.0.1
 
 * initial release

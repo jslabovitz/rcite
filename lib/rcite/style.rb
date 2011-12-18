@@ -3,13 +3,38 @@ module RCite
   # Ancestor class for all user-defined styles. This class defines a unified
   # interface for styles (namely the {#cite} and {#bib} method) as well
   # as providing various helper methods to ease creating new styles.
+  #
+  # The 'workflow' of the Style class goes as follows:
+  #
+  # 1. {#cite} or {#bib} are called with a BibTeX::Entry for the text that
+  #    is to be cited. They check if their style object has a
+  #    `cite_type` and `bib_type` method respectively, where `type` is the
+  #    BibTeX entry type for the current text. If so, they set {#text}
+  #    accordingly and reset {#elements}.
+  # 2. The `cite_type` and `bib_type` methods use {#add} to add
+  #    {RCite::Element}s to {#elements}.
+  # 3. When these methods return, the actual citation/bibliography entry
+  #    is constructed from {#elements}.
   class Style
+
+    # A BibTeX::Entry that describes the text currently being processed. Should
+    # not be changed by any methods except {#cite} and {#bib}. See {Style} for
+    # information on the RCite 'workflow'.
+    #
+    # @return [BibTeX::Entry] The current text's entry.
+    attr_accessor :text
+
+    # Array of {RCite::Element}s for the current {#text}. See {Style} for
+    # information on the RCite 'workflow'.
+    #
+    # @return [Array<RCite::Element>] 
+    attr_accessor :elements
 
     # Generates a citation for the given `text`. This method dynamically
     # looks up the method `"cite_#{text.type}"` and calls it with
-    # `text` as the only argument. Before that it sets the `$text` global 
+    # `text` as the only argument. Before that it sets the `@text` 
     # variable to be `text` so that the method it calls can access it.
-    # When this method returns, `$text` is set to `nil` again.
+    # When this method returns, `@text` is set to `nil` again.
     #
     # @param [BibTeX::Bibliography] text A bibliography in `bibtex-ruby`'s
     #   format.
@@ -22,21 +47,21 @@ module RCite
         raise ArgumentError.new("This style does not define the type"+
           "' #{text.type}'.")
       end
-      $text = text
-      $tmp = []
+      @text = text
+      @elements = []
       begin
         send(method)
       ensure
-        $text = nil
+        @text = nil
       end
-      elements_to_string($tmp)
+      elements_to_string(@elements)
     end
     
     # Generates a bibliography entry for the given `text`. This method dynamically
     # looks up the method `"bib_#{text.type}"` and calls it with
-    # `text` as the only argument. Before that it sets the `$text` global 
+    # `text` as the only argument. Before that it sets the `@text` global 
     # variable to be `text` so that the method it calls can access it.
-    # When this method returns, `$text` is set to `nil` again.
+    # When this method returns, `@text` is set to `nil` again.
     #
     # @param (see #cite)
     # @raise (see #cite)
@@ -47,14 +72,14 @@ module RCite
         raise ArgumentError.new("This style does not define the type"+
           " '#{text.type}'.")
       end
-      $text = text
-      $tmp = []
+      @text = text
+      @elements= []
       begin
         send(method) 
       ensure
-        $text = nil
+        @text = nil
       end
-      elements_to_string($tmp)
+      elements_to_string(@elements)
     end
 
     #################################BEGIN PRIVATE##############################

@@ -28,7 +28,7 @@ module RCite
     # These fields can be accessed through helper methods that are each
     # named just as their respective field. Other fields that may also
     # be defined in the BibTeX document can only be accessed directly via
-    # the hash, e.g. `$text[:unusual_field]`.
+    # the hash, e.g. `@text[:unusual_field]`.
     #
     # In addition to the fields defined here, this class provides helper methods
     # for the more complex {#author} and {#editor}.
@@ -62,7 +62,7 @@ module RCite
 
     FIELDS.each do |f|
       define_method(f) do
-        $text[f.to_sym]
+        @text[f.to_sym]
       end
     end
 
@@ -74,16 +74,16 @@ module RCite
     def initialize
       @defaults = methods.include?(:default) ? default : {}
       @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
-      $tmp = []
+      @elements = []
     end
 
-    # Adds the specified `elements` to the global variable `$tmp`. Each
+    # Adds the specified `elements` to the variable `@elements`. Each
     # element can be either a `String` or an `Element`. `String`s are
     # converted to `Elements` of type `:con` before appending. `nil` arguments
     # and empty strings are dropped.
     #
     # @param [Element,String] elements Any number of elements or strings
-    #   that should be appended to $tmp.
+    #   that should be appended to @elements.
     def add(*elements)
       elements.map! do |e|
         if e.is_a? RCite::Element
@@ -95,7 +95,7 @@ module RCite
         end
       end
 
-      $tmp.concat elements.compact
+      @elements.concat elements.compact
     end
 
     # Defines a seperator element. This method is a very simple helper method
@@ -136,7 +136,7 @@ module RCite
     # @return [String, nil] The list of authors, or `nil` if the bibliographic
     #   data for this text defines none.
     def authors(options = {})
-      authors_or_editors($text[:author].to_names, options) if $text[:author]
+      authors_or_editors(@text[:author].to_names, options) if @text[:author]
     end
 
     alias author authors
@@ -148,7 +148,7 @@ module RCite
     # @return [String,nil] The list of editors, or `nil` if the bibliographic
     #   data for this text defines none.
     def editors(options = {})
-      authors_or_editors($text[:editor].to_names, options) if $text[:editor]
+      authors_or_editors(@text[:editor].to_names, options) if @text[:editor]
     end
 
     alias editor editors

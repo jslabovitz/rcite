@@ -1,0 +1,31 @@
+# RCite release history
+
+## Versioning Scheme
+
+RCite uses [Semantic Versioning](semver.org). Version numbers are determined
+as follows:
+
+1. Patch version increases (x.x.up) indicate bug fixes. They are always
+   backwards compatible and should only improve things.
+2. Minor version increases (x.up.x) indicate feature additions and larger
+   changes to the code. The user API (see below) remains backwards compatible,
+   while the programmer API may change.
+3. Major version increases (up.x.x) indicate fundamental changes to RCite.
+   Both user and programmer API may change.
+
+Changes to both APIs are indicated below for each version.
+
+### User And Programmer API
+
+Everything that is meant to be used in user-made styles belongs to the
+user API. The StyleGuide is a good source: Everything mentioned there
+is likely part of the user API. The same obviously applies to the `rcite`
+command itself.
+
+All the other public classes and methods belong to the programmer API.
+
+## Released Versions
+
+Version 0.0.1
+
+* initial release

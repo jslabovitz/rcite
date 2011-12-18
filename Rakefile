@@ -21,6 +21,16 @@ task :cov do |t|
   end
 end
 
+# API task. Lists methods, constants etc. that belong to the user API.
+task :api do |t|
+  puts "============================================="
+  puts "The following objects belong to the user API."
+  puts "For information on the APIs, see NEWS."
+  puts "============================================="
+  YARD::CLI::List.new.run("--query", "@api.text =~ /^user/")
+end
+
+
 # Debug task. Checks if I've forgotten a debug statement somewhere.
 task :debug do |t|
   Dir['**/*.rb'].each do |f|

@@ -90,20 +90,20 @@ module RCite
     # `:con`, its content is immediately appended to the string. If it is of type
     # `:sep`, the following rules apply:
     #
-    # 1. All seperators are removed from the tail of the index until a
+    # 1. All separators are removed from the tail of the index until a
     #    content Element is encountered.
     # 2. If the element is the first item in the list, it is dropped.
     # 3. If the element is the last item in the list, it is dropped.
-    # 4. If the preceding element is a seperator as well, the current element is
+    # 4. If the preceding element is a separator as well, the current element is
     #    dropped.
     # 5. Otherwise it is appended to the string.
     #
     # @param [Array<Element>] elements An array of Element objects.
-    # @return [String] A string constructed by omitting useless seperator elements
+    # @return [String] A string constructed by omitting useless separator elements
     #   and concatenating the rest together.
     def elements_to_string(elements)
       string = ''
-      # Deletes the longest possible range of seperators from the end of
+      # Deletes the longest possible range of separators from the end of
       # the array.
       elements = elements.reverse.drop_while {|e| e.type == :sep}
       elements.reverse!.compact!

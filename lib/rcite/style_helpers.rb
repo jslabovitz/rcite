@@ -18,6 +18,8 @@ module RCite
     # The default values for the {#defaults} hash. These are loaded if the
     # style does not define some itself using the `default` method.
     # See {#initialize}.
+    #
+    # @api user
     DEFAULTS = {
       :ordering     => :last_first,
       :delim        => '; ',
@@ -33,7 +35,8 @@ module RCite
     # In addition to the fields defined here, this class provides helper methods
     # for the more complex {#author} and {#editor}.
     # details.
-
+    #
+    # @api user
     FIELDS = %w{
       address
       annote
@@ -71,6 +74,8 @@ module RCite
     # the options from their hash are merged with {DEFAULTS}, whereby the
     # options returned by the `default` method supersede those from
     # `DEFAULTS`.
+    #
+    # @api user
     def initialize
       @defaults = methods.include?(:default) ? default : {}
       @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
@@ -84,6 +89,8 @@ module RCite
     #
     # @param [Element,String] elements Any number of elements or strings
     #   that should be appended to @elements.
+    #
+    # @api user
     def add(*elements)
       elements.map! do |e|
         if e.is_a? RCite::Element
@@ -112,6 +119,8 @@ module RCite
     #
     # @return [Element] An `Element` of type `:sep` with `seperator` as the
     #   element's `content`.
+    #
+    # @api user
     def sep(seperator)
       RCite::Element.new(:sep, seperator)
     end
@@ -135,6 +144,8 @@ module RCite
     # 
     # @return [String, nil] The list of authors, or `nil` if the bibliographic
     #   data for this text defines none.
+    #
+    # @api user
     def authors(options = {})
       authors_or_editors(@text[:author].to_names, options) if @text[:author]
     end
@@ -147,6 +158,8 @@ module RCite
     # @option (see #authors)
     # @return [String,nil] The list of editors, or `nil` if the bibliographic
     #   data for this text defines none.
+    #
+    # @api user
     def editors(options = {})
       authors_or_editors(@text[:editor].to_names, options) if @text[:editor]
     end

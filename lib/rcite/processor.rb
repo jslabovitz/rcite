@@ -43,6 +43,8 @@ module RCite
     # @raise [ArgumentError] if the file does not define a class that matches
     #   the filename, or if the class that is defined there does not
     #   provide the {RCite::Style#bib} and {RCite::Style#cite} methods.
+    #
+    # @api user
     def load_style(file)
       # Load the file content
       require "#{File.absolute_path(file)}" 
@@ -88,6 +90,8 @@ module RCite
     # @return [BibTeX::Bibliography] The bibliography that has been loaded
     #   from the style.
     # @raise all errors that `BibTeX::Bibliography` raises.
+    #
+    # @api user
     def load_data(file)
       @bibliography = BibTeX::Bibliography.open(file)
 
@@ -111,6 +115,8 @@ module RCite
     #   there is no text with given `id` in `bib`.
     #
     # @return [String] A citation for the given text.
+    #
+    # @api user
     def cite(id)
       check_attrs
 
@@ -131,6 +137,8 @@ module RCite
     # @raise (see #cite)
     #
     # @return [String] A bibliography entry for the given text.
+    #
+    # @api user
     def bib(id)
       check_attrs
 

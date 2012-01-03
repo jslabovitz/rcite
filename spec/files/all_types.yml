@@ -10,7 +10,7 @@
   :series: "{12}"
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: article2
   :type: :article
   :author: "{Limperg, Jannis and Otto, Kai}"
@@ -22,7 +22,7 @@
   :series: "{12}"
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: book1
   :type: :book
   :author: "{Limperg, Jannis and Otto, Kai}"
@@ -34,7 +34,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: book2
   :type: :book
   :editor: "{Limperg, Bettina and Limperg, Michael}"
@@ -46,7 +46,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: booklet1
   :type: :booklet
   :title: "{Ein Artikel}"
@@ -55,7 +55,7 @@
   :edition: "{5. Aufl.}"
   :month: "{mar}"
   :year: "{2011}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :howpublished: "{gar nicht}"
 - :key: inbook1
   :type: :inbook
@@ -70,7 +70,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: inbook2
   :type: :inbook
   :editor: "{Limperg, Bettina and Limperg, Michael}"
@@ -84,7 +84,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: incollection1
   :type: "{useless incollection}"
   :author: "{Limperg, Jannis and Otto, Kai}"
@@ -100,7 +100,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: incollection2
   :type: "{useless incollection}"
   :author: "{Limperg, Jannis and Otto, Kai}"
@@ -116,7 +116,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: inproceedings1
   :type: :inproceedings
   :author: "{Limperg, Jannis and Otto, Kai}"
@@ -131,7 +131,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :organization: "{akj freiburg}"
 - :key: inproceedings2
   :type: :inproceedings
@@ -147,7 +147,7 @@
   :address: "{Freiburg}"
   :edition: "{5. Aufl.}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :organization: "{akj freiburg}"
 - :key: manual1
   :type: :manual
@@ -158,14 +158,14 @@
   :edition: "{5. Aufl.}"
   :month: "{mar}"
   :year: "{2011}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: mastersthesis1
   :type: "{useless mastersthesis}"
   :author: "{Limperg, Jannis and Otto, Kai}"
   :title: "{Ein Artikel}"
   :school: "{Uni Freiburg}"
   :year: "{2011}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :month: "{mar}"
   :address: "{Freiburg}"
 - :key: misc1
@@ -174,7 +174,7 @@
   :author: "{Limperg, Jannis and Otto, Kai}"
   :howpublished: "{gar nicht}"
   :year: "{2011}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :month: "{mar}"
 - :key: phdthesis1
   :type: "{useless mastersthesis}"
@@ -182,7 +182,7 @@
   :author: "{Limperg, Jannis and Otto, Kai}"
   :school: "{Uni Freiburg}"
   :year: "{2011}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :month: "{mar}"
   :address: "{Freiburg}"
 - :key: proceedings1
@@ -198,7 +198,7 @@
   :month: "{mar}"
   :organization: "{akj freiburg}"
   :publisher: "{Suhrkamp}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: proceedings2
   :type: :proceedings
   :title: "{Ein Artikel}"
@@ -212,7 +212,7 @@
   :month: "{mar}"
   :organization: "{akj freiburg}"
   :publisher: "{Suhrkamp}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: techreport1
   :type: "{useless techreport}"
   :title: "{Ein Artikel}"
@@ -221,11 +221,11 @@
   :institution: "{akj freiburg}"
   :address: "{Freiburg}"
   :month: "{mar}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
 - :key: unpublished1
   :type: :unpublished
   :title: "{Ein Artikel}"
   :author: "{Limperg, Jannis and Otto, Kai}"
-  :note: "{unn\xC3\xB6tig!}"
+  :note: "{unnötig!}"
   :month: "{mar}"
   :year: "{2011}"

@@ -16,13 +16,14 @@ Gem::Specification.new do |s|
   s.files       = Dir["lib/**/*.rb"] + Dir["bin/**/*"] + Dir["spec/**/*"]
   s.executables << 'rcite'
   
-  s.add_runtime_dependency 'bibtex-ruby', '~> 2.0'
-  s.add_runtime_dependency 'slop', '~> 2.1'
-  s.add_runtime_dependency 'require_all', '~> 1.2'
+  s.add_runtime_dependency 'bibtex-ruby',   '~> 2.0'
+  s.add_runtime_dependency 'slop',          '~> 2.1'
+  s.add_runtime_dependency 'require_all',   '~> 1.2'
 
-  s.add_development_dependency 'rspec', '~> 2.7'
+  s.add_development_dependency 'rspec',     '~> 2.7'
   s.add_development_dependency 'simplecov', '~> 0.5'
-  s.add_development_dependency 'yard', '~> 0.7'
+  s.add_development_dependency 'yard',      '~> 0.7'
   s.add_development_dependency 'redcarpet', '~> 2.0'
-  s.add_development_dependency 'rake', '~> 0.9'
+  s.add_development_dependency 'rake',      '~> 0.9'
+  s.add_development_dependency 'cucumber',  '~> 1.1'
 end

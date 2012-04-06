@@ -15,6 +15,7 @@ end
 
 SimpleCov.configure do
   add_filter 'styles/'
+  add_filter 'spec/'
 end
 
 SimpleCov.start

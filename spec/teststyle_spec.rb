@@ -1,8 +1,7 @@
 require 'spec_helper'
 require 'rcite'
-require 'teststyle.rb'
 
-describe Teststyle do
+describe 'Teststyle' do
 
   before :all do
     @pro = Processor.new

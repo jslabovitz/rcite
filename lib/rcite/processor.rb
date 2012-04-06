@@ -42,8 +42,6 @@ module RCite
     #
     # @api user
     def load_style(file)
-      # Load the file content
-      require "#{File.absolute_path(file)}" 
 
       # Guesses the style's classname from the filename. The following
       # chain of operations determines the given file's basename, strips
@@ -51,6 +49,15 @@ module RCite
       # name of the class that is defined in the file.
       classname = file.to_s.sub(/.rb$/, "").match(/\/[a-zA-Z_0-9]+$/)[0].
         gsub(/\/(.?)/) { $1.upcase }.gsub(/(?:^|_)(.)/) { $1.upcase }
+
+      # Check if the specified class is already loaded.
+      raise "The specified file is already loaded." if
+        RCite.const_defined?(classname)
+
+      # Load the file content
+      load "#{File.absolute_path(file)}" 
+
+      # Construct a new instance of the style and set @style accordingly
       begin
         @style = RCite.const_get(classname).new
       rescue

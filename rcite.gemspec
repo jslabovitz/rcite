@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
                   "as bibliography entries based on styles. Its key feature "+
                   "is the simple style syntax that sets it apart from BibTeX, "+
                   "BibLaTeX and CSL."
-  s.license     = ['MIT']
+  s.license     = 'MIT'
 
   s.authors     = ["Jannis Limperg"]
   s.email       = 'jannis.limperg@arcor.de'

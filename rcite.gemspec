@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.executables << 'rcite'
   
   s.add_runtime_dependency 'bibtex-ruby',   '~> 2.0'
-  s.add_runtime_dependency 'slop',          '~> 2.1'
+  s.add_runtime_dependency 'slop',          '~> 3.0'
   s.add_runtime_dependency 'require_all',   '~> 1.2'
 
   s.add_development_dependency 'rspec',     '~> 2.7'

@@ -1,6 +1,5 @@
 require 'spec_helper'
-require 'style'
-require 'style_helpers'
+require 'bibtex'
 
 describe RCite::Style do
 
@@ -66,7 +65,7 @@ describe RCite::Style do
 
   describe "#sep" do
     it "should return an Element of type :sep with the desired content" do
-      @style.sep(', ').should == Element.new(:sep, ', ')
+      @style.sep(', ').should == RCite::Element.new(:sep, ', ')
     end
   end
 

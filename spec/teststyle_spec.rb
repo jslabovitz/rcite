@@ -1,10 +1,9 @@
 require 'spec_helper'
-require 'rcite'
 
 describe 'Teststyle' do
 
   before :all do
-    @pro = Processor.new
+    @pro = RCite::Processor.new
     @pro.load_style('styles/teststyle.rb')
   end
 

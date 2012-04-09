@@ -1,8 +1,4 @@
 require 'spec_helper'
-require 'processor'
-require 'style'
-require 'style_helpers'
-require 'rspec/mocks'
 
 describe RCite::Processor do
 

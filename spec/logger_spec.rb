@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'logging'
 
 describe RCite::Logger do
 

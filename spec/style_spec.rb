@@ -1,6 +1,5 @@
 require 'spec_helper'
-require 'style'
-require 'rspec/mocks'
+require 'bibtex'
 
 describe RCite::Style do
 

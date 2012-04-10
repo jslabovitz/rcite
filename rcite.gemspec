@@ -20,10 +20,10 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'slop',          '~> 3.0'
   s.add_runtime_dependency 'require_all',   '~> 1.2'
 
-  s.add_development_dependency 'rspec',     '~> 2.7'
-  s.add_development_dependency 'simplecov', '~> 0.5'
+  s.add_development_dependency 'rspec',     '~> 2.9'
+  s.add_development_dependency 'simplecov', '~> 0.6'
   s.add_development_dependency 'yard',      '~> 0.7'
-  s.add_development_dependency 'redcarpet', '~> 2.0'
+  s.add_development_dependency 'redcarpet', '~> 2.1'
   s.add_development_dependency 'rake',      '~> 0.9'
   s.add_development_dependency 'cucumber',  '~> 1.1'
 end

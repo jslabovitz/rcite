@@ -77,7 +77,7 @@ module RCite
     #
     # @api user
     def initialize
-      @defaults = methods.include?(:default) ? default : {}
+      @defaults = respond_to?(:default, true) ? default : {}
       @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
       @elements = []
     end

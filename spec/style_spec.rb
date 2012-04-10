@@ -22,7 +22,7 @@ describe RCite::Style do
       RCite::Element.new(:con, "content2"),
     ]
     @style.stub(:cite_book) { @style.elements = @citation_array if @style.text }
-    @style.stub(:bib_book) { @style.elements = @citation_array if @style.text }
+    @style.stub(:bib_book)  { @style.elements = @citation_array if @style.text }
   end
 
   describe '#cite' do

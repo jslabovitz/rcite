@@ -12,22 +12,17 @@ describe RCite::Processor do
   end
 
   describe '#load_style' do
-    context "when called for a valid style-defining file" do
-      it "should load the style and make it available in the 'style' instance method" do
-        @pro.load_style(VALID_STYLE_FILE)
-        @pro.style.class.to_s.should == "RCite::ValidStyle"
-      end
+    it 'should create the class RCite::TheStyle and load the given file into it' do
+      @pro.load_style(VALID_STYLE_FILE)
+      fail 'RCite::TheStyle is undefined' unless defined? RCite::TheStyle
+      sty = @pro.style
+      sty.should_not be(nil)
+      sty.private_methods.should include(:cite_book, :bib_book)
     end
 
-    context "when called for a style-defining file where the classname does not match the filename" do
-      it "should raise an ArgumentError" do
-        expect { @pro.load_style(WRONG_CLASSNAME_STYLE_FILE) }.to raise_error ArgumentError
-      end
-    end
-
-    context "when called for a style-defining file where the loaded class has no cite and bib methods" do
-      it "should raise an ArgumentError" do
-        expect { @pro.load_style(NO_STYLE_METHODS_STYLE_FILE) }.to raise_error ArgumentError
+    context 'if the given file cannot be loaded' do
+      it 'should raise a LoadError' do
+        expect { @pro.load_style('inexistant_file')  }.to raise_error LoadError
       end
     end
   end

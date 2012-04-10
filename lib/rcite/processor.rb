@@ -24,52 +24,49 @@ module RCite
     # file. Can be `nil` if no data file has been loaded yet.
     attr_accessor :bibliography
     
-    # Loads a style file. The file must define a class with the same name as
-    # its basename camelized, in the {RCite} module.
+    # Loads an RCite style.
     #
-    # So for example, `some_style.rb` must define `RCite::SomeStyle` and
-    # `another_style.rb` must define `RCite::AnotherStyle`.
+    # Styles simply consist of Ruby code (mainly method definitions) that
+    # are executed in the context of a newly created class `RCite::TheStyle`
+    # that inherits from {Style}. Think of the code in the style file as being
+    # surrounded by
     #
-    # If the file is loaded successfully, an instance of the class defined
-    # in it is assigned to {#style}.
+    # ```ruby
+    # class RCite::TheStyle < Style
+    #
+    # private
+    #
+    # # code from the style file
+    # end
+    # ```
+    #
+    # Note that all code added by the style file will be private by default.
+    # This shouldn't make a difference because RCite will only communicate
+    # with objects of the style via the public interface of {RCite::Style}.
+    # If you still want to change it, use the `public` and `protected` methods
+    # inside the style file.
+    #
+    # This method also sets {#style} to a new instance of the loaded class.
     #
     # @param [String] file Relative or absolute path of the file that should
     #   be loaded.
+    #
     # @return [void]
-    # @raise [ArgumentError] if the file does not define a class that matches
-    #   the filename, or if the class that is defined there does not
-    #   provide the {RCite::Style#bib} and {RCite::Style#cite} methods.
+    #
+    # @raise [LoadError] if the specified file cannot be loaded by the Kernel
+    #   method `load`.
     #
     # @api user
     def load_style(file)
 
-      # Guesses the style's classname from the filename. The following
-      # chain of operations determines the given file's basename, strips
-      # the .rb ending and camelizes the rest. The result should be the
-      # name of the class that is defined in the file.
-      classname = file.to_s.sub(/.rb$/, "").match(/\/[a-zA-Z_0-9]+$/)[0].
-        gsub(/\/(.?)/) { $1.upcase }.gsub(/(?:^|_)(.)/) { $1.upcase }
-
-      # Check if the specified class is already loaded.
-      raise "The specified file is already loaded." if
-        RCite.const_defined?(classname)
-
-      # Load the file content
-      load "#{File.absolute_path(file)}" 
-
-      # Construct a new instance of the style and set @style accordingly
-      begin
-        @style = RCite.const_get(classname).new
-      rescue
-        raise ArgumentError.new "Expected classname #{classname} in file #{file}."
+      style = Class.new(RCite::Style) do
+        load "#{File.absolute_path(file)}" 
       end
 
-      # Check if the class has `cite` and `bib` methods. If not, we can't
-      # use it as a style.
-      if !@style.respond_to?(:cite) || !@style.respond_to?(:bib)
-        raise ArgumentError.new "Every style must define the 'cite' and 'bib'" +
-          " instance methods."
-      end
+      RCite.send(:remove_const, :TheStyle) if RCite.const_defined?(:TheStyle)
+      RCite.const_set(:TheStyle, style)
+
+      @style = RCite::TheStyle.new
     end
 
     # Loads the specified BibTeX file and sets {#bibliography} accordingly.

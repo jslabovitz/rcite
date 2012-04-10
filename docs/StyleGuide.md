@@ -1,65 +1,46 @@
 # Creating and Editing RCite Styles
 
 Creating and modifying an RCite style is very easy -- after all, that is what
-it was designed for. A style basically consists of four things: The framework,
-the type methods, the `add` command and the `sep` command.
+it was designed for. A style basically consists of three things: The type
+methods, the `add` command and the `sep` command.
 
 For an example of a working style, see the {file:styles/teststyle.rb Teststyle}.
 
-## Framework
-
-An empty style file looks like this:
-
-    class MyFirstStyle < RCite::Style
-
-    end
-
-The only potential problem lies in the style name, here "MyFirstStyle". This
-style name must correspond to the name of the file the style is defined in,
-whereby underscores in the filename correspond to camel case in the style name.
-
-So the style mentioned above **must** be defined in a file named
-`my_first_style.rb`. Likewise, `teststyle.rb` corresponds to `Teststyle`
-and `SomeStyle` corresponds to `some_style.rb`.
-
 ## Type Methods
 
-Our style does not yet do anything, so we will have to tell it what to do with
-all sorts of texts. RCite handles citations according to BibTeX types
-(@article, @book, @misc etc.), assuming that an `article` will probably be
-processed differently than a `book`.
+RCite handles citations according to BibTeX types (@article, @book, @misc etc.),
+assuming that an `article` will probably be processed differently than a `book`.
+Your style has to tell RCite how to process these different types of text.
 
 <small>Actually you can simply define your own types by creating the appropriate
-methods and using the type in your BibTeX file. For example, as I currently
-study laws, I will probably define some sort of `@commentary` type.</small>
+methods and using the type in your BibTeX file. For example, as a law student
+I will probably define some sort of `@commentary` type.</small>
 
-Each BibTeX type corresponds to two methods in the style file: **`bib_type`**
-and **`cite_type`**. The former is used to generate a bibliography entry for
+Each BibTeX type corresponds to two methods in the style file: **bib_type**
+and **cite_type**. The former is used to generate a bibliography entry for
 the given text, while the latter creates a citation.
 
-So if we want to cite books with our style, we would define the two corresponding
-methods:
+So if we want to cite books with our style, we would define the two
+corresponding methods. Each starts with `def`, followed by the method name, and
+each ends with `end`:
 
-    class MyFirstStyle < RCite::Style
-      
-      def cite_book
+    def cite_book
+      # method body goes here; see below
+    end
 
-      end
-
-      def bib_book
-
-      end
-
+    def bib_book
+      # method body goes here; see below
     end
 
 ## '`add`' and '`add sep`'
 
-Now we can finally tell the style how to construct a citation/bibliography entry.
-To do so, we will determine which of the many BibTeX fields (`author`, `title`,
-`year` etc.) we want to use in which order, and how they should be separated
-from each other.
+Now we can finally tell the style how to construct a citation/bibliography
+entry.  To do so, we will determine which of the many BibTeX fields (`author`,
+`title`, `year` etc.) we want to use in which order, and how they should be
+separated from each other.
 
-This will probably become clear by looking at an example of a `cite_book` method:
+This will probably become clear by looking at an example of a `cite_book`
+method:
 
     def cite_book
       add author
@@ -73,7 +54,7 @@ This will probably become clear by looking at an example of a `cite_book` method
 
 **Note that any literal text which should appear in the citation must be
 enclosed in double or single quotes!** Most commonly, this will apply to
-seperators (see below).
+separators (see below).
 
 This method would create a citation like the following:
 
@@ -87,7 +68,7 @@ clear how things work. Each standard BibTeX field (see
 by using `add`. Now, what does the `add sep` mean in comparison to
 the simple `add`?
 
-`add sep` indicates that the following item is a *seperator*, as opposed to
+`add sep` indicates that the following item is a *separator*, as opposed to
 a *BibTeX `field`*. Fields can be defined in the BibTeX file, but they can
 also be empty, and in this case problems might arise.
 
@@ -114,7 +95,7 @@ Sometimes you will, despite the magic of separators, want to test if a field
 is set and do something according to the result. This is where
 '`if ... elsif ... else`' comes in handy.
 
-Let's look at an example first:
+Let us look at an example first:
 
     def cite_book
       if author
@@ -126,7 +107,7 @@ Let's look at an example first:
       else
         add "(Unknown Author):"
       end
-      [...]
+      # [...]
     end
 
 What this will do is:
@@ -147,7 +128,7 @@ Conditions can also be combined using the boolean functions `&&` (AND) and
         add editor
         add sep " (Ed.): "
       end
-      [...]
+      # [...]
     end
 
 This would refine our style by defining a method to handle the simultaneous
@@ -159,17 +140,13 @@ When multiple authors/editors are given for a certain text, RCite will
 automatically generate nice lists for you. These can be customised by
 adding a `default` method to your style:
 
-    class MyFirstStyle < RCite::Style
-      
-      def default
-        {
-          :ordering => :last_first,
-          :delim => '; ',
-          :et_al => 3,
-          :et_al_string => 'et al.',
-        }
-      end
-
+    def default
+      {
+        :ordering => :last_first,
+        :delim => '; ',
+        :et_al => 3,
+        :et_al_string => 'et al.',
+      }
     end
 
 The values shown in the example above are the default values that are used
@@ -197,9 +174,9 @@ multiple authors/editors. Using f.ex. ';\<space>' here will result in
 
 ### Et al.
 
-`:et_al` indicates how many authors/editors should be listed before shortening the
-list and appending `:et_al_string`. If you set this to `2` and have 3 authors
-defined in the bibliography file, the list would look like
+`:et_al` indicates how many authors/editors should be listed before shortening
+the list and appending `:et_al_string`. If you set this to `2` and have 3
+authors defined in the bibliography file, the list would look like
 
     Limperg, Jannis; Otto, Kai et al.
 

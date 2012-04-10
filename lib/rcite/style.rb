@@ -43,7 +43,7 @@ module RCite
     # @return [String] The citation.
     def cite(text)
       method = "cite_#{text.type}"
-      if !respond_to?(method)
+      if !respond_to?(method, true)
         raise ArgumentError.new("This style does not define the type"+
           "' #{text.type}'.")
       end
@@ -68,7 +68,7 @@ module RCite
     # @return [String] The bibliography entry.
     def bib(text)
       method = "bib_#{text.type}".to_s
-      if !respond_to?(method)
+      if !respond_to?(method, true)
         raise ArgumentError.new("This style does not define the type"+
           " '#{text.type}'.")
       end

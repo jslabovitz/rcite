@@ -27,46 +27,15 @@ module RCite
       :et_al_string => 'et al.',
     }
 
-    # These fields can be accessed through helper methods that are each
-    # named just as their respective field. Other fields that may also
-    # be defined in the BibTeX document can only be accessed directly via
-    # the hash, e.g. `@text[:unusual_field]`.
+    # Searches for the given `bibtex_field` in {#text}.
     #
-    # In addition to the fields defined here, this class provides helper methods
-    # for the more complex {#author} and {#editor}.
-    # details.
+    # @param [to_sym] bibtex_field Any field that can be specified in a BibTeX
+    #   entry, like `title`, `year`, `shorttitle`, `url` etc.
     #
-    # @api user
-    FIELDS = %w{
-      address
-      annote
-      booktitle
-      chapter
-      crossref
-      edition
-      howpublished
-      institution
-      journal
-      key
-      month
-      note
-      number
-      organization
-      pages
-      publisher
-      school
-      series
-      title
-      type
-      volume
-      year
-    }
-
-
-    FIELDS.each do |f|
-      define_method(f) do
-        @text[f.to_sym]
-      end
+    # @return [String,nil] The field's value if it is set in the BibTeX entry
+    #   {#text}, otherwise `nil`.
+    def method_missing(bibtex_field)
+      @text[bibtex_field.to_sym]
     end
 
     # Loads the default options. Style authors may define the method `default`
@@ -105,9 +74,9 @@ module RCite
       @elements.concat elements.compact
     end
 
-    # Defines a seperator element. This method is a very simple helper method
-    # for style generation which can be used to indicate that `seperator` is
-    # a seperator, not bibliographic data. This method should be used in
+    # Defines a separator element. This method is a very simple helper method
+    # for style generation which can be used to indicate that `separator` is
+    # a separator, not bibliographic data. This method should be used in
     # conjunction with {#add}, as shown in the example.
     #
     # @example Using `sep` with `add`
@@ -115,14 +84,14 @@ module RCite
     #   add sep ': '
     #   add title
     #
-    # @param [String] seperator Some string that should be used as a seperator.
+    # @param [String] separator Some string that should be used as a separator.
     #
-    # @return [Element] An `Element` of type `:sep` with `seperator` as the
+    # @return [Element] An `Element` of type `:sep` with `separator` as the
     #   element's `content`.
     #
     # @api user
-    def sep(seperator)
-      RCite::Element.new(:sep, seperator)
+    def sep(separator)
+      RCite::Element.new(:sep, separator)
     end
 
     # Returns a list of all authors of the given text if any are defined.

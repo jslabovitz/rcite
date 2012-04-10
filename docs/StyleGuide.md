@@ -34,6 +34,8 @@ each ends with `end`:
 
 ## '`add`' and '`add sep`'
 
+### '`add`'
+
 Now we can finally tell the style how to construct a citation/bibliography
 entry.  To do so, we will determine which of the many BibTeX fields (`author`,
 `title`, `year` etc.) we want to use in which order, and how they should be
@@ -62,11 +64,15 @@ This method would create a citation like the following:
 
 I have marked each part of the citation that corresponds to one `add` command
 in the `cite_book` method above with curly braces, so it should be
-clear how things work. Each standard BibTeX field (see
-{RCite::Style::FIELDS this list}) can be accessed by its name
-(`author`, `editor`, `title` etc.) and added to the citation/bibliography entry
-by using `add`. Now, what does the `add sep` mean in comparison to
-the simple `add`?
+clear how things work. You can access each BibTeX field by simply adding its
+name to an `add` command; standard fields like `year` as well as non-standard
+ones like `shorttitle` or `url`.
+
+<small>In case you need a field that collides with one of the other commands
+-- f.ex. if you have a BibTeX field named `add` --, you can access it via
+@text[:FIELDNAME]. Note the colon in front of `FIELDNAME`.</small>
+
+### '`add sep`'
 
 `add sep` indicates that the following item is a *separator*, as opposed to
 a *BibTeX `field`*. Fields can be defined in the BibTeX file, but they can

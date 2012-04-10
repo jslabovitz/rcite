@@ -61,6 +61,19 @@ module RCite
         @slop.help
       end
 
+      # Checks if the given file exists and is readable. Logs an error and
+      # exits if not.
+      #
+      # @param [String,File] file The file to check.
+      #
+      # @return [void]
+      def self.validate_file(file)
+        unless File.exist?(file) && File.stat(file).readable?
+          log.error("Could not read file: #{file}")
+          exit 1
+        end
+      end
+
     end # module Command
   end # module CLI
 end # module RCite

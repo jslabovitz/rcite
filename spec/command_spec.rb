@@ -39,6 +39,17 @@ describe Command do
         expect { @command.run([]) }.to raise_error(SystemExit)
       end
     end
-  end
+  end # describe #run
+
+  describe '::validate_file' do
+    context 'if the specified file does not exist' do
+      it 'should log an error and exit' do
+        log.should_receive(:error).once
+
+        expect { Command.send(:validate_file, 'file/does/not/exist') }.
+          to raise_error SystemExit
+      end
+    end
+  end # describe ::validate_file
 
 end # describe class Command

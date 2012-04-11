@@ -38,14 +38,13 @@ can command its full power to create complex styles.
 The `rcite` command provides a (very) basic interface to RCite. It can be
 used as follows:
 
-    rcite [bib|cite] key --style=stylefile --bib=bibfile
+    rcite [bib|cite] --style=stylefile --bib=bibfile [--] key
 
     bib
       Causes the programme to generate a bibliography entry for the specified
-      text, as opposed to a citation.
+      text.
     cite
-      Causes the programme to generate a citation for the specified
-      text, as opposed to a bibliography entry.
+      Causes the programme to generate a citation for the specified text.
 
     key
       The text's id, which is the unique identifier given in the bibfile.
@@ -55,6 +54,11 @@ used as follows:
     bibfile
       A BibTeX file containing bibliographic data about the texts you want
       to cite.
+
+In addition to this 'manual' usage, RCite provides a preprocessing mode in
+which it parses a file and replaces certain commands with citations or
+bibliography entries. See the 
+[Processing Guide](http://rubydoc.info/github/JLimperg/rcite/master/file/ProcessingGuide).
 
 ## Creating and Editing Styles
 

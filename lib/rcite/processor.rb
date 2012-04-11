@@ -84,9 +84,13 @@ module RCite
 
     # Generates a citation for the `text` with given `id`. This method searches
     # the {#bibliography} for a `text` where `:key == id` and -- if it
-    # happens to find one -- returns `@style.cite(text)`.
+    # happens to find one -- returns `@style.cite(text, additional_fields)`.
     #
     # @param [Symbol] id The unique identifier (key) set in the BibTeX file.
+    # @param [Hash] fields A hash where each key represents a BibTeX field
+    #   and each value represents its value. This can be used to set fields
+    #   'on the fly', most notably the `thepage` field that indicates which
+    #   page the user wants to cite.
     # 
     # @raise [ArgumentError] if {#style} or {#bibliography} are `nil`, or if
     #   there is no text with given `id` in `bib`.
@@ -94,20 +98,20 @@ module RCite
     # @return [String] A citation for the given text.
     #
     # @api user
-    def cite(id)
+    def cite(id, fields = {})
       check_attrs
 
       text = find_text(id)
       if text
-        @style.cite(text)
+        @style.cite(text, fields)
       else
-        raise ArgumentError.new "No text with id #{id} found."
+        raise ArgumentError, "No text with id #{id} found."
       end
     end
 
     # Generates a bibliography entry for the `text` with given `id`. This method
     # searches the {#bibliography} for a `text` where `key == id` and -- if it
-    # happens to find one -- returns `@style.bib(text)`.
+    # happens to find one -- returns `@style.bib(text, fields)`.
     #
     # @param (see #cite)
     #
@@ -116,12 +120,12 @@ module RCite
     # @return [String] A bibliography entry for the given text.
     #
     # @api user
-    def bib(id)
+    def bib(id, fields = {})
       check_attrs
 
       text = find_text(id)
       if text
-        @style.bib(text)    
+        @style.bib(text, fields)
       else
         raise ArgumentError.new "No text with id #{id} found."
       end

@@ -30,24 +30,32 @@ module RCite
     # @return [Array<RCite::Element>] 
     attr_accessor :elements
 
-    # Generates a citation for the given `text`. This method dynamically
-    # looks up the method `"cite_#{text.type}"` and calls it with
-    # `text` as the only argument. Before that it sets the `@text` 
-    # variable to be `text` so that the method it calls can access it.
-    # When this method returns, `@text` is set to `nil` again.
+    # Generates a citation for the given `text`. This method
     #
-    # @param [BibTeX::Bibliography] text A bibliography in `bibtex-ruby`'s
+    # 1. Merges `text.to_hash` and `fields` whereby values from `fields` take
+    #    precedence.
+    # 2. Sets `@text` to the merge result. When this method returns, `@text` is
+    #    set to `nil` again.
+    # 3. Looks up the method `"cite_#{text.type}"` and calls it.
+    #
+    # @param [BibTeX::Entry] text A bibliography entry in `bibtex-ruby`'s
     #   format.
+    # @param [Hash] fields A hash where each key is a BibTeX field and each
+    #   value is that field's value. This can be used to set fields 'on the
+    #   fly', most notably the `thepage` field that indicates which page the 
+    #   user wants to cite.
+    #
     # @raise ArgumentError if the style does not support the given entry's
     #   `type`.
+    #
     # @return [String] The citation.
-    def cite(text)
+    def cite(text, fields = {})
       method = "cite_#{text.type}"
       if !respond_to?(method, true)
         raise ArgumentError.new("This style does not define the type"+
           "' #{text.type}'.")
       end
-      @text = text
+      @text = text << fields
       @elements = []
       begin
         send(method)
@@ -57,22 +65,26 @@ module RCite
       elements_to_string(@elements)
     end
     
-    # Generates a bibliography entry for the given `text`. This method dynamically
-    # looks up the method `"bib_#{text.type}"` and calls it with
-    # `text` as the only argument. Before that it sets the `@text` global 
-    # variable to be `text` so that the method it calls can access it.
-    # When this method returns, `@text` is set to `nil` again.
+    # Generates a bibliography entry for the given `text`. This method
+    #
+    # 1. Merges `text.to_hash` and `fields` whereby values from `fields` take
+    #    precedence.
+    # 2. Sets `@text` to the merge result. When this method returns, `@text` is
+    #    set to `nil` again.
+    # 3. Looks up the method `"bib_#{text.type}"` and calls it.
     #
     # @param (see #cite)
+    #
     # @raise (see #cite)
+    #
     # @return [String] The bibliography entry.
-    def bib(text)
+    def bib(text, fields = {})
       method = "bib_#{text.type}".to_s
       if !respond_to?(method, true)
         raise ArgumentError.new("This style does not define the type"+
           " '#{text.type}'.")
       end
-      @text = text
+      @text = text << fields
       @elements= []
       begin
         send(method) 
@@ -99,6 +111,7 @@ module RCite
     # 5. Otherwise it is appended to the string.
     #
     # @param [Array<Element>] elements An array of Element objects.
+    #
     # @return [String] A string constructed by omitting useless separator elements
     #   and concatenating the rest together.
     def elements_to_string(elements)

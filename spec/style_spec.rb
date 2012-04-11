@@ -4,7 +4,7 @@ require 'bibtex'
 describe RCite::Style do
 
   before(:all) do
-    @book_entry = BibTeX::Entry.new {|o| o.type = :book}
+    @book_entry    = BibTeX::Entry.new {|o| o.type = :book   }
     @article_entry = BibTeX::Entry.new {|o| o.type = :article}
   end
 

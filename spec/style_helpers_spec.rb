@@ -47,7 +47,7 @@ describe RCite::Style do
     context "when it is passed any number of Elements" do
       it "should add the Elements to @elements" do
         el1 = RCite::Element.new(:con, "A string")
-        el2 = RCite::Element.new(:sep, "A seperator")
+        el2 = RCite::Element.new(:sep, "A separator")
         el3 = RCite::Element.new(:con, "Another string")
         @style.elements = [ el1 ]
         @style.add(el2, el3)

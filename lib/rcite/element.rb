@@ -1,17 +1,17 @@
 module RCite
 
   # Represents one element of a citation. An element can be either some sort
-  # of content, f.ex. the surname of an author, or a seperator like `" "` or
-  # `", "`. This distinction is made so that one can add content and seperators
+  # of content, f.ex. the surname of an author, or a separator like `" "` or
+  # `", "`. This distinction is made so that one can add content and separators
   # without knowing whether the content will actually exist, and later omit
-  # seperators that are meant to seperate content that doesn't exist.
+  # separators that are meant to seperate content that doesn't exist.
   class Element
 
-    # @return [Symbol] The element type. Only `:sep` (for seperators) and `:con`
+    # @return [Symbol] The element type. Only `:sep` (for separators) and `:con`
     #   (for content) are allowed. See {RCite::Element} for details.
     attr_accessor :type
     # @return [String] The element's content, for example an author's surname or
-    #   a seperator like `", "`.
+    #   a separator like `", "`.
     attr_accessor :content
 
     def initialize(type, content)

@@ -32,7 +32,7 @@ module RCite
       # uses {RCite::Processor#cite} to cite the specified text, handling any
       # exceptions that are thrown by the processor.
       #
-      # @return [void]
+      # @return [String] the generated citation.
       def run!
         validate_opts
 
@@ -40,7 +40,7 @@ module RCite
         processor.load_style(@slop[:style])
         processor.load_data(@slop[:bib])
         begin
-          puts processor.cite(@cmdline[0])
+          return processor.cite(@cmdline[0])
         rescue ArgumentError => ex
           log.error(ex.message)
           exit 1

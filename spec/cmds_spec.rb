@@ -101,10 +101,10 @@ describe CiteCommand do
 
   describe '#run!' do
     it 'should cite the specified text ID' do
-      STDOUT.should_receive(:puts).with('citation: Butcher, Judith 1981')
       @cmd.run(['-s', VALID_STYLE,
                 '-b', VALID_BIB  ,
-                'butcher-81'      ])
+                'butcher-81'      ]).should == 'citation: Butcher, Judith 1981'
+
     end
   end # describe #run!
 
@@ -123,10 +123,10 @@ describe BibCommand do
 
   describe '#run!' do
     it 'should create a bibliography entry for the specified text ID' do
-      STDOUT.should_receive(:puts).with('bibentry: Butcher, Judith 1981')
+
       @cmd.run(['-s', VALID_STYLE,
                 '-b', VALID_BIB  ,
-                'butcher-81'      ])
+                'butcher-81'      ]).should == 'bibentry: Butcher, Judith 1981'
     end
   end # describe #run!
 

@@ -27,7 +27,7 @@ module RCite
 
         # Run the command or display an error if no such command was found.
         if cmd_class[0]
-          cmd_class[0].new.run(cmdline)
+          puts cmd_class[0].new.run(cmdline)
         else
           log.error "Command not found: #{cmd}. See #{File.basename($0)} help"
         end

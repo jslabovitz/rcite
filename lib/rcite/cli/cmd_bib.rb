@@ -34,7 +34,7 @@ module RCite
       # specified text, handling any exceptions that are thrown by the
       # processor.
       #
-      # @return [void]
+      # @return [String] the generated bibliography entry.
       def run!
         validate_opts
 
@@ -42,7 +42,7 @@ module RCite
         processor.load_style(@slop[:style])
         processor.load_data(@slop[:bib])
         begin
-          puts processor.bib(@cmdline[0])
+          return processor.bib(@cmdline[0])
         rescue ArgumentError => ex
           log.error(ex.message)
           exit 1

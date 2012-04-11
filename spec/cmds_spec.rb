@@ -8,7 +8,24 @@ VALID_BIB   = File.join('spec', 'files', 'test.bib'      )
 
 # SHARED EXAMPLES ##############################################################
 
-shared_examples 'cite_and_bib' do |command_class, command_name|
+shared_examples 'cite_bib' do |command_class, command_name|
+
+  describe '#run!' do
+    context 'if the given text ID is undefined' do
+      it 'should log an error and exit' do
+        log.should_receive(:error).once
+
+        expect { @cmd.run(['-s', VALID_STYLE,
+                           '-b', VALID_BIB  ,
+                           'undefined_id'     ]) }.
+          to raise_error SystemExit
+      end
+    end
+  end # describe #run!
+
+end # shared examples cite_bib
+
+shared_examples 'all_commands' do |command_class, command_name|
 
   before :each do
     @cmd = command_class.send(:new)
@@ -27,23 +44,10 @@ shared_examples 'cite_and_bib' do |command_class, command_name|
       @cmd.instance_variable_get(:@slop).class.should == Slop
     end
   end # describe #setup_slop
-  
-  describe '#run!' do
-    context 'if the given text ID is undefined' do
-      it 'should log an error and exit' do
-        log.should_receive(:error).once
-
-        expect { @cmd.run(['-s', VALID_STYLE,
-                           '-b', VALID_BIB  ,
-                           'undefined_id'     ]) }.
-          to raise_error SystemExit
-      end
-    end
-  end # describe #run!
 
   describe '#validate_opts' do
 
-    context 'if any of style, bibliography or text ID is not specified' do
+    context 'if any of style, bibliography or text ID/file is not specified' do
       it 'should log an error and exit' do
 
         log.should_receive(:error).exactly(3).times
@@ -82,7 +86,7 @@ shared_examples 'cite_and_bib' do |command_class, command_name|
 
   end # describe #validate_opts
 
-end # shared examples
+end # shared examples all commands
 
 # CiteCommand ##################################################################
 
@@ -92,7 +96,8 @@ describe CiteCommand do
     @cmd = CiteCommand.new
   end
 
-  include_examples 'cite_and_bib', CiteCommand, 'cite'
+  include_examples 'all_commands', CiteCommand, 'cite'
+  include_examples 'cite_bib'    , CiteCommand, 'cite'
 
   describe '#run!' do
     it 'should cite the specified text ID' do
@@ -113,7 +118,8 @@ describe BibCommand do
     @cmd = BibCommand.new
   end
 
-  include_examples 'cite_and_bib', BibCommand, 'bib'
+  include_examples 'all_commands', BibCommand, 'bib'
+  include_examples 'cite_bib'    , BibCommand, 'bib'
 
   describe '#run!' do
     it 'should create a bibliography entry for the specified text ID' do
@@ -125,3 +131,15 @@ describe BibCommand do
   end # describe #run!
 
 end # describe BibCommand
+
+# ProcessCommand ###############################################################
+
+describe ProcessCommand do
+
+  before :each do
+    @cmd = ProcessCommand.new
+  end
+
+  include_examples 'all_commands', ProcessCommand, 'process'
+
+end # describe ProcessCommand

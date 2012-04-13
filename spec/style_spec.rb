@@ -26,6 +26,7 @@ describe RCite::Style do
   end
 
   describe '#cite' do
+
     context "when called for an entry with known type" do
       it "should call the style's method #cite_type and convert the returned "+
         "array of Elements to the corresponding string" do
@@ -64,9 +65,11 @@ describe RCite::Style do
         expect { @style.cite(@article_entry) }.to raise_exception ArgumentError
       end
     end
-  end
+
+  end # describe #cite
 
   describe '#bib' do
+
     context "when called for an entry with known type" do
       it "should call the style's method #bib_type" do
         @style.bib(@book_entry).should == 'content1separatorcontent2'
@@ -78,5 +81,39 @@ describe RCite::Style do
         expect { @style.bib(@article_entry) }.to raise_exception ArgumentError
       end
     end
-  end
+
+  end # describe #bib
+
+  describe '#around(quantifier, command, before_string, after_string)' do
+
+    context 'if either of the two keys is invalid' do
+      it 'should raise an ArgumentError' do
+        expect { @style.around(:every, :bib, '', '') }.to
+          raise_error ArgumentError
+        expect { @style.around(:all, :citez, '', '') }.to
+          raise_error ArgumentError
+      end
+    end
+
+    context 'if either of the two strings is nil' do
+      it 'should not change the associated value' do
+        @style.around(:all, :cites, :changes, :remains)
+        @style.around(:all, :cites, :changed, nil     )
+
+        @style.around(:all, :cites).should == [:changed, :remains]
+      end
+    end
+
+  end # describe #around 1
+
+  describe '#around(quantifier, command)' do
+    it 'should return the same results for :bib/:bibs and :cite/:cites' do
+      o1, o2 = Object.new, Object.new
+      @style.around(:all, :bibs,  o1, o2)
+      @style.around(:all, :cites, o2, o1)
+
+      @style.around(:all, :bib ).should == [o1, o2]
+      @style.around(:all, :cite).should == [o2, o1]
+    end
+  end # describe #around 2
 end

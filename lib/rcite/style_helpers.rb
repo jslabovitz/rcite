@@ -44,11 +44,15 @@ module RCite
     # options returned by the `default` method supersede those from
     # `DEFAULTS`.
     #
+    # Additionally, this method executes `#preamble`, which may be used by
+    # style authors to set global defaults and such.
+    #
     # @api user
     def initialize
       @defaults = respond_to?(:default, true) ? default : {}
       @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
       @elements = []
+      preamble if respond_to?(:preamble, true)
     end
 
     # Adds the specified `elements` to the variable `@elements`. Each

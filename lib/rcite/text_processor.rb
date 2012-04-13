@@ -63,9 +63,9 @@ module RCite
     #
     # @api user
     COMMAND_SYNTAX_REGEXP =
-      /^(?<command>
+      /^((?<command>
              cite|bib
-        )\s+
+        )\s+)?+
         (?<key>
              [^\s]+
         )
@@ -128,28 +128,54 @@ module RCite
     # @return [String] The citation/bibliography entry, or a string indicating
     #   that an error occured.
     def process_command(command)
-      m = COMMAND_SYNTAX_REGEXP.match(command)
-      return '%%SYNTAX ERROR%%' unless m
-
-      cmd, key, page, fields = m[:command], m[:key], m[:page], m[:fields]
-
-      fields_hash = {}
-
-      if page
-        fields_hash[:thepage] = page
-      end
-
-      if fields
-        hsh = YAML.load("{ #{fields} }")
-        hsh2 = {}
-        hsh.each_pair do |k,v|
-          hsh2[k.to_sym] = v
+      cmd = nil
+      result = []
+      command.split("|").each do |subcommand|
+        m = COMMAND_SYNTAX_REGEXP.match(subcommand)
+        unless m # unless we have a syntactically valid command
+          result << '%%SYNTAX ERROR%%' 
+          next
         end
 
-        fields_hash.merge!(hsh2)
+        cmd ||= m[:command] # the command is parsed only for the first subcmd
+        return '%%SYNTAX ERROR: no command specified%%' unless cmd
+        cmd = cmd.to_sym
+
+        key, page, fields = m[:key], m[:page], m[:fields]
+
+        fields_hash = {} # will contain additional (quasi-)BibTeX fields
+
+        fields_hash[:thepage] = page if page
+
+        if fields
+          begin
+            hsh = YAML.load("{ #{fields} }")
+          rescue SyntaxError
+            result << '%%SYNTAX ERROR: invalid additional fields%%'
+            next
+          end
+
+          hsh2 = {}
+          hsh.each_pair do |k,v|
+            hsh2[k.to_sym] = v
+          end
+
+          fields_hash.merge!(hsh2)
+        end
+
+        a_each = @command_processor.style.around(:each, cmd)
+
+        result <<
+          a_each[0].to_s +
+          @command_processor.send(cmd, key, fields_hash).to_s +
+          a_each[1].to_s
       end
 
-      @command_processor.send(cmd.to_sym, key, fields_hash)
+      a_all = @command_processor.style.around(:all, cmd)
+      cmd_plural = (cmd.to_s + 's').to_sym # :cite -> :cites, :bib -> :bibs
+      between = @command_processor.style.between(cmd_plural).to_s
+      
+      a_all[0].to_s + result.join(between) + a_all[1].to_s
     end
 
   end # class TextProcessor

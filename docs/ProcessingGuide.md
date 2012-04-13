@@ -76,3 +76,10 @@ In this case, the page number *must* precede the custom fields.
 ```
 %%cite rauber2008 25 title: Rauber is cool%%
 ```
+
+Note that if you want to use special characters in your additional fields, you
+must surround them with quotes:
+
+```
+%%cite rauber2008 title: 'Is Rauber cool?'%%
+```

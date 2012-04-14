@@ -14,23 +14,41 @@ module RCite
     # then calls {Processor#cite} or {Processor#bib} with the extracted
     # parameters.
     #
+    # Must have a group named `command` that contains a command which
+    # {#process_command} can use.
+    #
     # @return [Processor] this {TextProcessor}'s {Processor}.
     attr_accessor :command_processor
 
     # Regular Expression that describes a preprocessing command in the text.
-    # Must have a group named `command` that contains a command as described in
-    # {#process_command}. This regexp should not attempt to determine whether
-    # the command syntax is correct.
+    # This regexp should not attempt to determine whether the command syntax
+    # is correct. It must not match text that is matched by
+    # {#bibliography_regexp}.
     #
-    # @example Command enclosed in '%%...%%' /%%(<command>.*)%%/m
+    # Must have a group named `command` that contains a command which
+    # {#process_command} can use.
     #
     # @return [Regexp] the preprocessing regexp.
     attr_accessor :preprocessing_regexp
 
-    # @return [Regexp] The default value for {#preprocessing_regexp}.
+    # Regular expression that describes the special `bibliography` preprocessing
+    # command. This regexp should not attempt to determine whether the command
+    # syntax is correct.
+    #
+    # @return [Regexp] the bibliography regexp.
+    attr_accessor :bibliography_regexp
+
+    # @return [Regexp] Default value for {#preprocessing_regexp}.
     # 
     # @api user
-    DEFAULT_PREPROCESSING_REGEXP = /%%\s*(?<command>.*?)\s*%%/m.freeze
+    DEFAULT_PREPROCESSING_REGEXP =
+      /%%\s*(?<command>(cite|bib)[^%]*)%%/m.freeze
+
+    # @return [Regexp] Default value for {#bibliography_regexp}.
+    #
+    # @api user
+    DEFAULT_BIBLIOGRAPHY_REGEXP  =
+      /%%\s*(?<command>bibliography[^%]*)%%/m.freeze
 
     # Describes the syntax for commands. A command is the string inside the
     # {#preprocessing_regexp}. It includes the following information:
@@ -63,9 +81,12 @@ module RCite
     #
     # @api user
     COMMAND_SYNTAX_REGEXP =
-      /^((?<command>
+      /^(?<command>bibliography)
+        |
+        ( # a
+        ((?<command>
              cite|bib
-        )\s+)?+
+        )\s+)?
         (?<key>
              [^\s]+
         )
@@ -80,13 +101,17 @@ module RCite
              [a-zA-Z0-9\-_]+:\s*[^,]+
              (?:,\s*[a-zA-Z0-9\-_]+:\s*[^,]+)*
         ))?
+        ) # closes a
+        \s*
       $/xm.freeze
 
     # Creates a new {TextProcessor}. {#command_processor} is initialised with
     # a new {Processor}.
     def initialize
-      @command_processor = Processor.new
+      @command_processor    = Processor.new
       @preprocessing_regexp = DEFAULT_PREPROCESSING_REGEXP
+      @bibliography_regexp  = DEFAULT_BIBLIOGRAPHY_REGEXP
+      @cited_texts = []
     end
 
     # Reads the contents of `file` and processes them, returning the processed
@@ -113,9 +138,16 @@ module RCite
     #
     # @api user
     def process_text(text)
-      text.gsub(@preprocessing_regexp) do |m|
+      @cited_texts = []
+      result = text.dup
+      result.gsub!(@preprocessing_regexp) do |m|
         process_command($~[:command])
       end
+      result.gsub!(@bibliography_regexp) do |m|
+        process_command($~[:command])
+      end
+      @cited_texts = nil
+      result
     end
 
     # Replaces a preprocessing command with the corresponding citation or
@@ -132,8 +164,11 @@ module RCite
     # @return [String] The citation/bibliography entry, or a string indicating
     #   that an error occured.
     def process_command(command)
+      style = @command_processor.style
       cmd = nil
       result = []
+
+      # subcommands are separated by the pipe symbol
       command.split("|").each do |subcommand|
         m = COMMAND_SYNTAX_REGEXP.match(subcommand)
         unless m # unless we have a syntactically valid command
@@ -144,43 +179,68 @@ module RCite
         cmd ||= m[:command] # the command is parsed only for the first subcmd
         return '%%SYNTAX ERROR: no command specified%%' unless cmd
         cmd = cmd.to_sym
-
         key, page, fields = m[:key], m[:page], m[:fields]
+        page.gsub!("'", '') if page =~ /^'[^']+'$/
 
-        fields_hash = {} # will contain additional (quasi-)BibTeX fields
-
-        fields_hash[:thepage] = page if page
-
-        if fields
-          begin
-            hsh = YAML.load("{ #{fields} }")
-          rescue SyntaxError
-            result << '%%SYNTAX ERROR: invalid additional fields%%'
-            next
+        if cmd == :cite || cmd == :bib
+          result << generate_cite_bib(cmd, key, page, fields)
+        elsif cmd == :bibliography
+          @cited_texts.each do |key|
+            result << generate_cite_bib(:bib, key, nil, nil)
           end
-
-          hsh2 = {}
-          hsh.each_pair do |k,v|
-            hsh2[k.to_sym] = v
-          end
-
-          fields_hash.merge!(hsh2)
         end
 
-        a_each = @command_processor.style.around(:each, cmd)
+        @cited_texts << key if cmd == :cite
+      end # each subcommand
 
-        result <<
-          a_each[0].to_s +
-          @command_processor.send(cmd, key, fields_hash).to_s +
-          a_each[1].to_s
-      end
-
-      a_all = @command_processor.style.around(:all, cmd)
+      cmd = :bib if cmd == :bibliography
+      a_all = style.around(:all, cmd)
       cmd_plural = (cmd.to_s + 's').to_sym # :cite -> :cites, :bib -> :bibs
-      between = @command_processor.style.between(cmd_plural).to_s
+      between = style.between(cmd_plural).to_s
       
       a_all[0].to_s + result.join(between) + a_all[1].to_s
-    end
+    end #process_command
+
+    # BEGIN PRIVATE ############################################################
+
+    private
+
+    # Generates a citation or bibliography entry.
+    #
+    # @param [:bib,:cite] cmd Determines whether a citation or a bibliography
+    #   entry is created.
+    # @param [String] key BibTeX ID of the text that should be cited/bib'd.
+    # @param [String] page Value that should be assigned to the `thepage`
+    #   (quasi-)BibTeX field before citing/bib'ing. May be `nil`.
+    # @param [Hash<Symbol, String>] fields Additional BibTeX fields. Keys are
+    #   BibTeX field names, values are their values. May be `nil`.
+    def generate_cite_bib(cmd, key, page, fields)
+      style = @command_processor.style
+      fields_hash = {} # will contain additional (quasi-)BibTeX fields
+
+      fields_hash[:thepage] = page if page
+
+      if fields
+        begin
+          hsh = YAML.load("{ #{fields} }")
+        rescue SyntaxError
+          return '%%SYNTAX ERROR: invalid additional fields%%'
+        end
+
+        hsh2 = {}
+        hsh.each_pair do |k,v|
+          hsh2[k.to_sym] = v
+        end
+
+        fields_hash.merge!(hsh2)
+      end
+
+      a_each = style.around(:each, cmd)
+
+      a_each[0].to_s +
+        @command_processor.send(cmd, key, fields_hash).to_s +
+        a_each[1].to_s
+    end #generate_cite_bib
 
   end # class TextProcessor
 end # module RCite

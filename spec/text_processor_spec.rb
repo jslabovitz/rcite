@@ -16,7 +16,7 @@ describe TextProcessor do
 
   describe '#process_text' do
 
-    it 'should call #process_command for every occurence of #command_regex' do
+    it 'should call #process_command for every occurence of #preprocessing_regexp' do
       @pro.stub(:process_command).and_return('cmd')
       text = "%%cite stuff%% %%bib stuff%%"
 

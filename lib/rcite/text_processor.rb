@@ -45,7 +45,7 @@ module RCite
     # ```
     # command   ::== cite|bib key [page] [hash[, hash]*]
     # key       ::== anything_but_whitespace+
-    # page      ::== anything_but_whitespace+
+    # page      ::== anything_but_whitespace+|'anything+'
     # hash      ::== hash_key: 'hash_val'
     # hash_key  ::== hash_char+
     # hash_char ::== letter|number|_|-
@@ -69,8 +69,12 @@ module RCite
         (?<key>
              [^\s]+
         )
-        (\s+(?<page>
-             [^\s]+
+        (\s+
+         ((?<page>
+             [^\s]+)
+          |
+          (?<page>
+             '[^']+')
         ))?
         (\s+(?<fields>
              [a-zA-Z0-9\-_]+:\s*[^,]+

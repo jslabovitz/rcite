@@ -43,6 +43,17 @@ Feature: 'process' command
       Citing made easy: [Limperg, Jannis: RCite, p. 25]
       """
 
+  Scenario: 'Page number' with spaces
+    Given the following file:
+      """
+      Citing made easy: [%%cite book1 '§25 Rn. 5'%%]
+      """
+    When I process the file
+    Then the result should be:
+      """
+      Citing made easy: [Limperg, Jannis: RCite, p. §25 Rn. 5]
+      """
+
   Scenario: Specifying additional fields
     Given the following file:
       """

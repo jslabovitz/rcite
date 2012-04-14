@@ -46,8 +46,13 @@ cite pp. 25--33:
 %%cite rauber2008 25--33%%
 ```
 
-The only constraint is that page numbers **may not contain whitespace**,
-especially space characters.
+However, if you want to use whitespace in your 'page number' (like spaces or
+tabs, e.g. for citing a paragraph like '§ 256'), you must enclose it in
+high commas, like so:
+
+```
+%%cite rauber2008 '§ 256'%%
+```
 
 ### Custom BibTeX fields
 
@@ -63,12 +68,6 @@ Here we have specified a new `title` ('Rauber is cool') and `shorttitle`
 ('Rauber cool') for this specific citation. These override the `title` and
 `shorttitle` values we might have in the bibliography file. Note that the
 individual assignments are separated by commas.
-
-In the same way you can also add page number values with whitespace:
-
-```
-%%cite rauber2008 thepage: §218 Rn. 30%%
-```
 
 Of course you can also specify a page number and custom fields simultaneously.
 In this case, the page number *must* precede the custom fields.

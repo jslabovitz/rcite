@@ -189,7 +189,7 @@ module RCite
         raise ArgumentError.new("This style does not define the type"+
           "' #{text.type}'.")
       end
-      @text = text << fields
+      @text = text.dup << fields
       @elements = []
       begin
         send(method)
@@ -218,7 +218,7 @@ module RCite
         raise ArgumentError.new("This style does not define the type"+
           " '#{text.type}'.")
       end
-      @text = text << fields
+      @text = text.dup << fields
       @elements= []
       begin
         send(method) 

@@ -2,22 +2,36 @@ require 'spec_helper'
 
 describe RCite::Processor do
 
-  VALID_STYLE_FILE = 'spec/files/valid_style.rb'
-  WRONG_CLASSNAME_STYLE_FILE = 'spec/files/wrong_classname.rb'
-  NO_STYLE_METHODS_STYLE_FILE = 'spec/files/no_methods.rb'
-  VALID_BIB_FILE = 'spec/files/all_types.bib'
+  VALID_STYLE_FILE  = 'spec/files/valid_style.rb'
+  VALID_STYLE_FILE2 = 'spec/files/valid_style2.rb'
+  VALID_BIB_FILE    = 'spec/files/all_types.bib'
 
   before(:all) do
     @pro = RCite::Processor.new
   end
 
   describe '#load_style' do
-    it 'should create the class RCite::TheStyle and load the given file into it' do
+    it 'should create a new style class and load the given file into it' do
       @pro.load_style(VALID_STYLE_FILE)
-      fail 'RCite::TheStyle is undefined' unless defined? RCite::TheStyle
+      fail 'Style class is undefined' unless defined? @pro.style_class
       sty = @pro.style
       sty.should_not be(nil)
-      sty.private_methods.should include(:cite_book, :bib_book)
+      sty.respond_to?(:cite_book, true).should == true
+      sty.respond_to?(:bib_book,  true).should == true
+    end
+
+    it 'should create a different style class every time it runs' do
+      @pro.load_style(VALID_STYLE_FILE)
+      c1 = @pro.style_class
+      @pro.load_style(VALID_STYLE_FILE)
+      c2 = @pro.style_class
+      c1.to_s.should_not == c2.to_s
+    end
+
+    it 'should unload the old style completely' do
+      @pro.load_style(VALID_STYLE_FILE2)
+      @pro.load_style(VALID_STYLE_FILE)
+      @pro.style.respond_to?(:additional_method, true).should == false 
     end
 
     context 'if the given file cannot be loaded' do

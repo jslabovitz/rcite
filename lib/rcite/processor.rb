@@ -14,37 +14,44 @@ module RCite
   # by mapping {RCite::Style#cite} and {RCite::Style#bib}.
   class Processor
 
+    @@style_counter = 1
+
     # The style that is used to turn bibliographic data gathered from a
     # BibTeX file to actual citations/bibliographic entries. Should
     # usually be a subclass of {RCite::Style}. Can be `nil` if no style
     # has been loaded yet.
+    #
+    # @return [RCite::Style,nil] the current style.
     attr_accessor :style
+
+    # Returns the class that the current {#style} is an instance of. The
+    # classname changes with each call of {#load_style}. Can be `nil` if
+    # no style has been loaded yet.
+    #
+    # @return [Class,nil] the style's class.
+    attr_reader   :style_class
 
     # A `BibTeX::Bibliography` with bibliographic data loaded from a BibTeX
     # file. Can be `nil` if no data file has been loaded yet.
+    #
+    # @return [BibTeX::Bibliography] the current bibliography
     attr_accessor :bibliography
     
     # Loads an RCite style.
     #
     # Styles simply consist of Ruby code (mainly method definitions) that
-    # are executed in the context of a newly created class `RCite::TheStyle`
+    # are executed in the context of a newly created class `RCite::StyleClass`
     # that inherits from {Style}. Think of the code in the style file as being
     # surrounded by
     #
     # ```ruby
-    # class RCite::TheStyle < Style
-    #
-    # private
-    #
-    # # code from the style file
+    # class RCite::StyleClass < Style
+    #   # code from the style file
     # end
     # ```
     #
-    # Note that all code added by the style file will be private by default.
-    # This shouldn't make a difference because RCite will only communicate
-    # with objects of the style via the public interface of {RCite::Style}.
-    # If you still want to change it, use the `public` and `protected` methods
-    # inside the style file.
+    # The style's `StyleClass` is different for each call of this method. Use
+    # {#style_class} to get the current `Class` object.
     #
     # This method also sets {#style} to a new instance of the loaded class.
     #
@@ -58,15 +65,18 @@ module RCite
     #
     # @api user
     def load_style(file)
+      style = Class.new(RCite::Style)
+      raise LoadError, "Could not read file: #{file}" unless
+        File.exists?(file) && File.readable?(file)
 
-      style = Class.new(RCite::Style) do
-        load "#{File.absolute_path(file)}" 
-      end
+      style.module_eval(File.read(File.absolute_path(file)))
 
-      RCite.send(:remove_const, :TheStyle) if RCite.const_defined?(:TheStyle)
-      RCite.const_set(:TheStyle, style)
+      @@style_counter += 1
+      classname = "Style#{@@style_counter}".to_sym
+      RCite.const_set(classname, style)
 
-      @style = RCite::TheStyle.new
+      @style_class = style
+      @style = @style_class.new
     end
 
     # Loads the specified BibTeX file and sets {#bibliography} accordingly.

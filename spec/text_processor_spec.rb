@@ -32,8 +32,7 @@ describe TextProcessor do
 
     context 'when the command contains syntax errors' do
       it 'should print an error message but not raise an error' do
-        @pro.process_command('cite key key key key').should
-          include('SYNTAX ERROR')
+        @pro.process_command('cite key key key').should == '%%SYNTAX ERROR%%'
       end
     end
 

@@ -48,10 +48,10 @@ cite pp. 25--33:
 
 However, if you want to use whitespace in your 'page number' (like spaces or
 tabs, e.g. for citing a paragraph like '§ 256'), you must enclose it in
-high commas, like so:
+quotation marks, like so:
 
 ```
-%%cite rauber2008 '§ 256'%%
+%%cite rauber2008 "§ 256"%%
 ```
 
 ### Custom BibTeX fields
@@ -77,8 +77,8 @@ In this case, the page number *must* precede the custom fields.
 ```
 
 Note that if you want to use special characters in your additional fields, you
-must surround them with quotes:
+must surround them with quotation marks:
 
 ```
-%%cite rauber2008 title: 'Is Rauber cool?'%%
+%%cite rauber2008 title: "Is Rauber cool?"%%
 ```

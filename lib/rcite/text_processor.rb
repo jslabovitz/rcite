@@ -42,7 +42,7 @@ module RCite
     # 
     # @api user
     DEFAULT_PREPROCESSING_REGEXP =
-      /%%\s*(?<command>(cite|bib)[^%]*)%%/m.freeze
+      /%%\s*(?<command>(cite|bib)\s+[^%]*)%%/m.freeze
 
     # @return [Regexp] Default value for {#bibliography_regexp}.
     #
@@ -50,10 +50,37 @@ module RCite
     DEFAULT_BIBLIOGRAPHY_REGEXP  =
       /%%\s*(?<command>bibliography[^%]*)%%/m.freeze
 
+    # Generates the regular expression that is used to parse commands. This
+    # method always returns the exact same result and therefore behaves much
+    # like a constant. It is only there to make the regexp more readable and
+    # its various parts more transparent.
+    #
+    # For command syntax and such, see {COMMAND_SYNTAX_REGEXP}.
+    #
+    # @return [Regexp] A regular expression that describes the syntax of
+    #   preprocessing commands.
+    def self.command_syntax_regexp
+      cmd           = /(?<command>bib|cite)/
+      key           = /(?<key>[^\s]+)/
+      lit_string    = /(?:"(?:[^"]|(?:(?<=\\)"))+")/ # matches '"s"' and '"s\""'
+      page          = /(?<page>(?:[^\s]+)|#{lit_string})/
+      hash_key      = /[a-zA-Z0-9_\-]+/
+      hash_val      = /(?:(?:[^,]+)|#{lit_string})/
+      hash_elem     = /#{hash_key}:\s*#{hash_val}/
+      hash          = /(?<fields>#{hash_elem}(?:\s*,\s*(?:#{hash_elem}))*)/
+      result        = /^\s*
+                       (?:#{cmd}\s+)?
+                       #{key}
+                       (?:\s+#{page})?
+                       (?:\s+#{hash})?
+                       \s*$/mx
+    end
+
     # Describes the syntax for commands. A command is the string inside the
     # {#preprocessing_regexp}. It includes the following information:
     #
-    # 1. which command to call -- cite or bib
+    # 1. which command to call -- cite or bib. Required for the first command
+    #    in a preprocessing directive, optional for any commands that follow.
     # 2. the BibTeX key of the text to be cited/bib'd
     # 3. the page that should be cited (optional)
     # 4. additional fields as a YAML inline hash (optional)
@@ -63,47 +90,26 @@ module RCite
     # ```
     # command   ::== cite|bib key [page] [hash[, hash]*]
     # key       ::== anything_but_whitespace+
-    # page      ::== anything_but_whitespace+|'anything+'
-    # hash      ::== hash_key: 'hash_val'
+    # page      ::== anything_but_whitespace+|"anything_but_quote+"
+    # hash      ::== hash_key: hash_val+|"anything_but_quote+"
     # hash_key  ::== hash_char+
     # hash_char ::== letter|number|_|-
-    # hash_val  ::== anything_but_comma*
+    # hash_val  ::== anything_but_comma*|"anything_but_quote+"
     # ```
     #
-    # (Spaces stand for any whitespace.)
+    # Spaces stand for any whitespace. Strings that are enclosed in quotation 
+    # marks can use `'\"'` to mask them.
     #
     # @example Valid commands
-    #   "cite rauber2008 25     title: 'new title', author: 'new author'"
-    #   "bib  rauber_08  25--37                                         "
-    #   "cite rauber-08         shorttitle: 'short title'               "
+    #   'cite rauber2008 25        title: "new, title", author: new author'
+    #   'bib  rauber_08  25--37                                           '
+    #   'cite rauber-08            shorttitle: short title                '
+    #   'cite rauber-08  "§2 Rn.2" shorttitle: short title                '
     #
     # @return [Regexp] the command regexp.
     #
     # @api user
-    COMMAND_SYNTAX_REGEXP =
-      /^(?<command>bibliography)
-        |
-        ( # a
-        ((?<command>
-             cite|bib
-        )\s+)?
-        (?<key>
-             [^\s]+
-        )
-        (\s+
-         ((?<page>
-             [^\s]+)
-          |
-          (?<page>
-             '[^']+')
-        ))?
-        (\s+(?<fields>
-             [a-zA-Z0-9\-_]+:\s*[^,]+
-             (?:,\s*[a-zA-Z0-9\-_]+:\s*[^,]+)*
-        ))?
-        ) # closes a
-        \s*
-      $/xm.freeze
+    COMMAND_SYNTAX_REGEXP = self.command_syntax_regexp.freeze
 
     # Creates a new {TextProcessor}. {#command_processor} is initialised with
     # a new {Processor}.
@@ -144,7 +150,7 @@ module RCite
         process_command($~[:command])
       end
       result.gsub!(@bibliography_regexp) do |m|
-        process_command($~[:command])
+        generate_bibliography
       end
       @cited_texts = nil
       result
@@ -179,31 +185,42 @@ module RCite
         cmd ||= m[:command] # the command is parsed only for the first subcmd
         return '%%SYNTAX ERROR: no command specified%%' unless cmd
         cmd = cmd.to_sym
-        key, page, fields = m[:key], m[:page], m[:fields]
-        page.gsub!("'", '') if page =~ /^'[^']+'$/
 
-        if cmd == :cite || cmd == :bib
-          result << generate_cite_bib(cmd, key, page, fields)
-        elsif cmd == :bibliography
-          @cited_texts.each do |key|
-            result << generate_cite_bib(:bib, key, nil, nil)
-          end
-        end
+        key, page, fields = m[:key], m[:page], m[:fields]
+        page.gsub!(/^"(.*?)"$/m, '\1') if page
+
+        result << generate_cite_bib(cmd, key, page, fields)
 
         @cited_texts << key if cmd == :cite
       end # each subcommand
 
-      cmd = :bib if cmd == :bibliography
       a_all = style.around(:all, cmd)
       cmd_plural = (cmd.to_s + 's').to_sym # :cite -> :cites, :bib -> :bibs
       between = style.between(cmd_plural).to_s
-      
+
       a_all[0].to_s + result.join(between) + a_all[1].to_s
     end #process_command
 
     # BEGIN PRIVATE ############################################################
 
     private
+
+    # Generates bibliography entries for each text that has been cited in
+    # preprocessing mode. Takes the separators given by {Style#around} and
+    # {Style#between} into account.
+    #
+    # @return [String] A complete printable bibliography.
+    def generate_bibliography
+      style = @command_processor.style
+      result = []
+      @cited_texts.each do |key|
+        result << generate_cite_bib(:bib, key, nil, nil)
+      end
+
+      a_all = style.around(:all, :bibs)
+      between = style.between(:bibs).to_s
+      a_all[0].to_s + result.join(between) + a_all[1].to_s
+    end #generate_bibliography
 
     # Generates a citation or bibliography entry.
     #

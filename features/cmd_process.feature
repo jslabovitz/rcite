@@ -46,7 +46,7 @@ Feature: 'process' command
   Scenario: 'Page number' with spaces
     Given the following file:
       """
-      Citing made easy: [%%cite book1 '§25 Rn. 5'%%]
+      Citing made easy: [%%cite book1 "§25 Rn. 5"%%]
       """
     When I process the file
     Then the result should be:
@@ -68,7 +68,7 @@ Feature: 'process' command
   Scenario: Additional fields override values from the bibliography
     Given the following file:
       """
-      Citing made easy: [%%cite book1 shorttitle: 'What is RCite?'%%]
+      Citing made easy: [%%cite book1 shorttitle: "What is RCite?"%%]
       """
     When I process the file
     Then the result should be:
@@ -79,7 +79,7 @@ Feature: 'process' command
   Scenario: Specifying multiple additional fields
     Given the following file:
       """
-      Citing made easy: [%%cite book1 shorttitle: 'What is RCite?',
+      Citing made easy: [%%cite book1 shorttitle: "What is RCite?",
       thepage: 25%%]
       """
     When I process the file

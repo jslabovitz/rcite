@@ -70,9 +70,9 @@ my mistakes. ;) RCite is at the moment lacking quite a number of major
 features which can partly be found in the 
 [issue tracker on Github](https://github.com/JLimperg/rcite/issues).
 
-Please take care, though, that your pull request/patch does not break the
-spec examples and that it is itself thoroughly spec'ed and documented. I am
-going for 100% code and documentation coverage, therefore it would be cool if you
+Please take care, though, that your pull request/patch does not break the spec
+examples and that it is itself thoroughly spec'ed and documented. I am going
+for 100% code and documentation coverage, therefore it would be cool if you
 could do so as well. Bonus points for topic branches.
 
 ### Testing
@@ -80,16 +80,16 @@ could do so as well. Bonus points for topic branches.
 After having installed RCite (including the development dependencies), run the
 following command:
 
-    rake spec
+    bundle exec rake test
 
 ### Documentation
 
 Documentation can be generated in `./doc` using
 
-    rake doc
+    bundle exec rake doc
 
-Please do not use plain RDoc but rather YARD, otherwise things will probably
-look strange.
+Please don't use plain RDoc but rather YARD when making modifications,
+otherwise things will probably look strange.
 
 ### Bugs and Feature Requests
 

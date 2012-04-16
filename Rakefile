@@ -2,8 +2,10 @@
 require 'cucumber'
 require 'cucumber/rake/task'
 
+task :test => ['spec', 'features']
+
 Cucumber::Rake::Task.new(:features) do |t|
-    t.cucumber_opts = "features --format pretty"
+    t.cucumber_opts = "features --format progress"
 end
 
 # RSpec task
@@ -45,7 +47,7 @@ task :debug do |t|
     File.open(File.join(File.dirname(__FILE__), f), 'r') do |file|
       ct = 1
       file.each do |line|
-        fail("DEBUG in file #{f}, line #{ct}.\n#{line}") if line =~ /DEBUG/
+        fail("#{$~} in file #{f}, line #{ct}.\n#{line}") if line =~ /TODO|DEBUG/
         ct += 1
       end
     end

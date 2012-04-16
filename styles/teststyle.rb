@@ -1,7 +1,6 @@
-def default
-  {
-    :delim => '/'
-  }
+def preamble
+  _delim '/'
+  _ordering :last_first
 end
 
 def cite_book

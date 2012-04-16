@@ -11,4 +11,5 @@ SimpleCov.start do
   add_filter 'styles/'
   add_filter 'spec/'
   add_filter 'features/'
+  add_filter 'lib/rcite/style_options.rb'
 end

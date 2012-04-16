@@ -3,56 +3,34 @@ require 'rcite/element'
 module RCite
   class Style
 
-    # The default options hash. Whenever a method with an
-    # `options` parameter is executed, it will merge the `options`
-    # hash submitted by the user with this one. This allows style authors
-    # to set a global default behaviour for various helper methods, but also
-    # allows them to override it in special cases.
-    #
-    # For details on which options are relevant for which method, see
-    # the respective method documentation.
-    #
-    # @return [Hash] The hash with default options.
-    attr_accessor :defaults
+    # @return [Hash<Symbol, Option>] This style's global {Option}s. Keys are
+    #   option names ({Option#name}), values are the {Option} objects that
+    #   describe the behaviour of various helper methods. For a list of all
+    #   options see {Style::OPTIONS}.
+    attr_accessor :opts
 
-    # The default values for the {#defaults} hash. These are loaded if the
-    # style does not define some itself using the `default` method.
-    # See {#initialize}.
+    # Returns the value of a BibTeX field for the current {#text}.
     #
-    # @api user
-    DEFAULTS = {
-      :ordering     => :last_first,
-      :delim        => '; ',
-      :et_al        => 3,
-      :et_al_string => 'et al.',
-    }
-
-    # Searches for the given `bibtex_field` in {#text}.
-    #
-    # @param [to_sym] bibtex_field Any field that can be specified in a BibTeX
-    #   entry, like `title`, `year`, `shorttitle`, `url` etc.
+    # @param [#to_sym] method Any field that can be specified in a
+    #   BibTeX entry, like `title`, `year`, `shorttitle`, `url` etc. May not
+    #   begin with an underscore.
     #
     # @return [String,nil] The field's value if it is set in the BibTeX entry
     #   {#text}, otherwise `nil`.
-    def method_missing(bibtex_field)
-      @text[bibtex_field.to_sym]
+    #
+    # @raise NoMethodError if {#text} `== nil`.
+    def method_missing(method, *args)
+      raise NoMethodError,
+        "Can't look up BibTeX fields: Style#text is `nil`" unless @text
+      @text[method.to_sym]
     end
 
-    # Loads the default options. Style authors may define the method `default`
-    # which should return an options hash (see {#defaults}). If they do so,
-    # the options from their hash are merged with {DEFAULTS}, whereby the
-    # options returned by the `default` method supersede those from
-    # `DEFAULTS`.
-    #
-    # Additionally, this method executes `#preamble`, which may be used by
-    # style authors to set global defaults and such.
+    # Adds each style option in {OPTIONS} to {#opts}.
     #
     # @api user
     def initialize
-      @defaults = respond_to?(:default, true) ? default : {}
-      @defaults.merge!(DEFAULTS) {|key, v1, v2| v1}
-      @elements = []
-      preamble if respond_to?(:preamble, true)
+      @opts = {}
+      OPTIONS.each { |o| @opts.merge!(o.name => o.dup) }
     end
 
     # Adds the specified `elements` to the variable `@elements`. Each
@@ -119,8 +97,8 @@ module RCite
     #   data for this text defines none.
     #
     # @api user
-    def authors(options = {})
-      authors_or_editors(@text[:author].to_names, options) if @text[:author]
+    def authors()
+      authors_or_editors(@text[:author].to_names) if @text[:author]
     end
 
     alias author authors
@@ -134,7 +112,7 @@ module RCite
     #
     # @api user
     def editors(options = {})
-      authors_or_editors(@text[:editor].to_names, options) if @text[:editor]
+      authors_or_editors(@text[:editor].to_names) if @text[:editor]
     end
 
     alias editor editors
@@ -143,13 +121,12 @@ module RCite
 
     private
 
-    def authors_or_editors(list, options = {})
+    def authors_or_editors(list)
       return if list == nil
-      merge_defaults(options)
 
       list = list.map do |person|
         string = ''
-        case options[:ordering]
+        case _ordering
           when :last_first
             string << list([person.prefix, person.last], " ")
             string << ", #{person.first}" if person.first
@@ -161,20 +138,16 @@ module RCite
       end
 
       print_et_al = false
-      max_num_of_persons = options[:et_al]
+      max_num_of_persons = _et_al
       if max_num_of_persons && list.size > max_num_of_persons
         list = list[0..(max_num_of_persons-1)]
         print_et_al = true
       end
 
-      string = list(list, options[:delim])
+      string = list(list, _delim)
 
-      string << " " + options[:et_al_string] if print_et_al
+      string << " " + _et_al_string if print_et_al
       return string
-    end
-
-    def merge_defaults(options)
-      options.merge!(@defaults) { |key, v1, v2| v1 } if options && defaults
     end
 
     def list(list, delim)

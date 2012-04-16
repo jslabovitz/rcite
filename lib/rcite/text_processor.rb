@@ -176,11 +176,8 @@ module RCite
 
       # subcommands are separated by the pipe symbol
       command.split("|").each do |subcommand|
-        m = COMMAND_SYNTAX_REGEXP.match(subcommand)
-        unless m # unless we have a syntactically valid command
-          result << '%%SYNTAX ERROR%%' 
-          next
-        end
+        m = subcommand.match(COMMAND_SYNTAX_REGEXP)
+        return "%%SYNTAX ERROR%%" unless m
 
         cmd ||= m[:command] # the command is parsed only for the first subcmd
         return '%%SYNTAX ERROR: no command specified%%' unless cmd
@@ -194,9 +191,8 @@ module RCite
         @cited_texts << key if cmd == :cite
       end # each subcommand
 
-      a_all = style.around(:all, cmd)
-      cmd_plural = (cmd.to_s + 's').to_sym # :cite -> :cites, :bib -> :bibs
-      between = style.between(cmd_plural).to_s
+      a_all = style.public_send("_around_all_#{cmd}s")
+      between = style.public_send("_between_#{cmd}s").to_s
 
       a_all[0].to_s + result.join(between) + a_all[1].to_s
     end #process_command
@@ -217,8 +213,8 @@ module RCite
         result << generate_cite_bib(:bib, key, nil, nil)
       end
 
-      a_all = style.around(:all, :bibs)
-      between = style.between(:bibs).to_s
+      a_all = style._around_all_bibs
+      between = style._between_bibs.to_s
       a_all[0].to_s + result.join(between) + a_all[1].to_s
     end #generate_bibliography
 
@@ -252,7 +248,7 @@ module RCite
         fields_hash.merge!(hsh2)
       end
 
-      a_each = style.around(:each, cmd)
+      a_each = style.public_send("_around_each_#{cmd}")
 
       a_each[0].to_s +
         @command_processor.send(cmd, key, fields_hash).to_s +

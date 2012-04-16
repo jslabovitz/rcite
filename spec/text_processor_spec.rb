@@ -95,23 +95,23 @@ describe TextProcessor do
 
     context 'when the command is a cite command' do
 
-      it 'should add text to each citation according to Style#around(:each, :cite)' do
+      it 'should add text to each citation according to Style#_around_each_cite' do
         @cmd_processor.stub(:cite).and_return('result')
-        @cmd_processor.style.around(:each, :cite, '<begin>', '<end>')
+        @cmd_processor.style._around_each_cite '<begin>', '<end>'
         @pro.process_command('cite key1|key2').should ==
           '<begin>result<end>; <begin>result<end>'
       end
 
-      it 'should add a separator in between citations according to Style#between(:cites)' do
-        @cmd_processor.style.between(:cites, '|||')
+      it 'should add a separator in between citations according to Style#_between_cites' do
+        @cmd_processor.style._between_cites '|||'
         @cmd_processor.stub(:cite).and_return('result')
         @pro.process_command('cite key1|key2').should ==
           'result|||result'
       end
 
-      it 'should add additional text as given in Style#around(:all, :cites)' do
+      it 'should add additional text as given in Style#_around_all_cites' do
         @cmd_processor.stub(:cite).and_return('result')
-        @cmd_processor.style.around(:all, :cites, '<begin>', '<end>')
+        @cmd_processor.style._around_all_cites '<begin>', '<end>'
         @pro.process_command('cite stuff').should == '<begin>result<end>'
       end
 
@@ -119,23 +119,23 @@ describe TextProcessor do
 
     context 'when the command is a bib command' do
 
-      it 'should add text to each bib entry according to Style#around(:each, :bib)' do
+      it 'should add text to each bib entry according to Style#_around_each_bib' do
         @cmd_processor.stub(:bib).and_return('result')
-        @cmd_processor.style.around(:each, :bib, '<begin>', '<end>')
+        @cmd_processor.style._around_each_bib '<begin>', '<end>'
         @pro.process_command('bib key1|key2').should ==
           "<begin>result<end>\n<begin>result<end>"
       end
 
-      it 'should add a separator in between bib entries according to Style#between(:bibs)' do
-        @cmd_processor.style.between(:bibs, '|||')
+      it 'should add a separator in between bib entries according to Style#_between_bibs' do
+        @cmd_processor.style._between_bibs '|||'
         @cmd_processor.stub(:bib).and_return('result')
         @pro.process_command('bib key1|key2').should ==
           'result|||result'
       end
 
-      it 'should add additional text as given in Style#around(:all, :bibs)' do
+      it 'should add additional text as given in Style#_around_all_bibs' do
         @cmd_processor.stub(:bib).and_return('result')
-        @cmd_processor.style.around(:all, :bibs, '<begin>', '<end>')
+        @cmd_processor.style._around_all_bibs '<begin>', '<end>'
         @pro.process_command('bib stuff')   .should == '<begin>result<end>'
       end
 

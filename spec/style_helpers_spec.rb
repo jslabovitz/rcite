@@ -3,28 +3,13 @@ require 'bibtex'
 
 describe RCite::Style do
 
-  before(:all) do
+  before(:each) do
     @style = RCite::Style.new
   end
 
   it "should have helper methods for all the BibTeX fields" do
     @style.text = BibTeX::Entry.new({ 'crossref' => 'refme!' })
     @style.crossref.should == 'refme!'
-  end
-
-  describe '#initialize' do
-    context "when the method #default is defined" do
-      it "should merge the hash returned by that method with the builtin default options" do
-        class CustomStyle < RCite::Style
-          def default
-            { :delim => '. ' }
-          end
-        end
-
-        CustomStyle.new.defaults[:delim].should == '. '
-        CustomStyle.new.defaults[:et_al].should == RCite::Style.new.defaults[:et_al]
-      end
-    end
   end
 
   describe '#add' do
@@ -91,7 +76,7 @@ describe RCite::Style do
     before(:all) do
       @method = :authors_or_editors
     end
-    
+
     before(:each) do
       @list = [
         BibTeX::Name.new(:last => 'Limperg', :prefix => 'von', :first =>
@@ -99,78 +84,46 @@ describe RCite::Style do
         BibTeX::Name.new(:last => 'Otto', :first => 'Kai')
       ]
     end
-    
+
     context "when the list contains one person" do
       it "should print that person with the desired ordering" do
         @list = [ @list.first ]
-        ordering = :last_first
+        @style._ordering :last_first
 
-        @style.send(@method, @list, :ordering => ordering).should ==
-          "von Limperg, Jannis"
+        @style.send(@method, @list).should == "von Limperg, Jannis"
       end
     end
 
     context "when the list contains multiple persons with incomplete information" do
       it "should print a correct list anyway" do
-        ordering = :last_first
-        delim = '; '
+        @style._ordering :last_first
+        @style._delim '; '
 
         @list[0]['first'] = nil
         @list[1]['first'] = nil
-        @style.send(@method, @list, :ordering => ordering, :delim => delim).should ==
-          "von Limperg; Otto"
+        @style.send(@method, @list).should == "von Limperg; Otto"
       end
     end
 
     context "when the list contains multiple persons" do
       it "should print all persons with the desired ordering and delimiter" do
-        ordering = :first_last
-        delim = "; "
+        @style._ordering :first_last
+        @style._delim "; "
 
-        @style.send(@method, @list, :delim => delim, :ordering => ordering).
-          should == "Jannis von Limperg; Kai Otto"
+        @style.send(@method, @list).should == "Jannis von Limperg; Kai Otto"
       end
     end
 
     context "when the list should be shortened by applying 'et al.'" do
       it "should print the desired amount of persons and append 'et al.'" do
-        ordering = :last_first
-        delim = "; "
-        et_al = 1
-        et_al_string = "et al."
+        @style._ordering :last_first
+        @style._delim "; "
+        @style._et_al 1
+        @style._et_al_string "et al."
 
-        @style.send(@method, @list, :delim => delim, :ordering => ordering,
-                    :et_al => et_al, :et_al_string => et_al_string).should ==
-          "von Limperg, Jannis et al."
+        @style.send(@method, @list).should == "von Limperg, Jannis et al."
       end
     end
-  end
-
-  describe '#merge_defaults' do
-
-    before(:all) do
-      @method = :merge_defaults
-      @style.defaults = { :et_al => 2, :delim => '. ', :ordering => :first_last}
-    end
-
-    before(:each) do
-      @options = { :delim => ', ', 'ordering' => :last_first }
-    end
-
-    context 'when a key is missing in the user-submitted options hash' do
-      it "should take it from the defaults hash" do
-        @style.send(@method, @options)
-        @options[:et_al].should == 2
-      end
-    end
-
-    context "when a key is present in the user-submitted options hash" do
-      it "should supersede the corresponding value from the defaults hash" do
-        @style.send(@method, @options)
-        @options[:delim].should == ', '
-      end
-    end
-
   end
 
 end

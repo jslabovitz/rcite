@@ -5,9 +5,6 @@ describe 'Teststyle' do
   before :all do
     @pro = RCite::Processor.new
     @pro.load_style('styles/teststyle.rb')
-  end
-
-  before :each do
     @pro.load_data('spec/files/test.bib')
   end
 

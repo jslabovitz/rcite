@@ -77,6 +77,7 @@ module RCite
 
       @style_class = style
       @style = @style_class.new
+      @style.preamble if @style.respond_to?(:preamble)
     end
 
     # Loads the specified BibTeX file and sets {#bibliography} accordingly.

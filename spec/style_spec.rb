@@ -84,36 +84,4 @@ describe RCite::Style do
 
   end # describe #bib
 
-  describe '#around(quantifier, command, before_string, after_string)' do
-
-    context 'if either of the two keys is invalid' do
-      it 'should raise an ArgumentError' do
-        expect { @style.around(:every, :bib, '', '') }.to
-          raise_error ArgumentError
-        expect { @style.around(:all, :citez, '', '') }.to
-          raise_error ArgumentError
-      end
-    end
-
-    context 'if either of the two strings is nil' do
-      it 'should not change the associated value' do
-        @style.around(:all, :cites, :changes, :remains)
-        @style.around(:all, :cites, :changed, nil     )
-
-        @style.around(:all, :cites).should == [:changed, :remains]
-      end
-    end
-
-  end # describe #around 1
-
-  describe '#around(quantifier, command)' do
-    it 'should return the same results for :bib/:bibs and :cite/:cites' do
-      o1, o2 = Object.new, Object.new
-      @style.around(:all, :bibs,  o1, o2)
-      @style.around(:all, :cites, o2, o1)
-
-      @style.around(:all, :bib ).should == [o1, o2]
-      @style.around(:all, :cite).should == [o2, o1]
-    end
-  end # describe #around 2
-end
+end # describe Style

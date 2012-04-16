@@ -144,19 +144,17 @@ presence of authors and editors (whatever that might be good for).
 
 When multiple authors/editors are given for a certain text, RCite will
 automatically generate nice lists for you. These can be customised by
-adding a `default` method to your style:
+adding a `preamble` method to your style:
 
-    def default
-      {
-        :ordering => :last_first,
-        :delim => '; ',
-        :et_al => 3,
-        :et_al_string => 'et al.',
-      }
+    def preamble 
+      _ordering     :last_first
+      _delim        '; '
+      _et_al        3
+      _et_al_string 'et al.'
     end
 
 The values shown in the example above are the default values that are used
-if you do not define a `default` method. You can also define this method and
+if you do not explicitely set them. You can also define a `preamble` method and
 only change some of the options. The following sections will explain each option
 in detail.
 
@@ -173,18 +171,35 @@ This parameter describes if the authors'/editors' names are printed as
 
 ### Delimiter
 
-The `:delim` option lets you choose any string that should be printed between
+The `delim` option lets you choose any string that should be printed between
 multiple authors/editors. Using f.ex. ';\<space>' here will result in
 'Limperg, Jannis; Otto, Kai', whereas '|' would produce
 'Limperg, Jannis|Otto, Kai'
 
 ### Et al.
 
-`:et_al` indicates how many authors/editors should be listed before shortening
-the list and appending `:et_al_string`. If you set this to `2` and have 3
+`et_al` indicates how many authors/editors should be listed before shortening
+the list and appending `et_al_string`. If you set this to `2` and have 3
 authors defined in the bibliography file, the list would look like
 
     Limperg, Jannis; Otto, Kai et al.
 
-`:et_al_string` can be any text that should be appended to the list if it is
+`et_al_string` can be any text that should be appended to the list if it is
 shortened because there are too many authors/editors.
+
+## Options in Preprocessing Mode
+
+You can control the output of commands in processing mode (see the
+{file:ProcessingGuide.md Processing Guide}) with the following options. As with
+the options for the author/editor list, these can be set in the preamble:
+
+    def preamble
+      around_each_bib  "", ""
+      around_each_cite "", ""
+      around_all_bibs  "", ""
+      around_all_cites "", ""
+      between_bibs     "\n"
+      between_cites    "; "
+    end
+
+TODO describe options in detail

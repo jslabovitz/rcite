@@ -22,7 +22,7 @@ Feature: Bibliography
         add sep ', p.'
         add thepage
       end
-      
+
       def bib_book
         add 'bib: ' + author + ': ' + title
       end
@@ -50,7 +50,7 @@ Feature: Bibliography
     Given the following addition to the style:
       """
       def preamble
-        sort_bibliography_by :author, :title
+        _sort_bibliography_by :author, :title
       end
       """
     Given the following file:
@@ -72,7 +72,7 @@ Feature: Bibliography
     Given the following addition to the style:
       """
       def preamble
-        sort_bibliography_by :author
+        _sort_bibliography_by :author
       end
       """
     Given the following file:
@@ -95,32 +95,7 @@ Feature: Bibliography
     Given the following addition to the style:
       """
       def preamble
-        before :all, :bibs, "<start>\n"
-        after  :all, :bibs, "\n<end>"
-      end
-      """
-    Given the following file:
-      """
-      %%cite book1|book2%%
-
-      %%bibliography%%
-      """
-    When I process the file
-    Then the result should be:
-      """
-      cite: Limperg: What is RCite?; cite: Limperg: This is it!
-
-      <start>
-      bib: Limperg: What is RCite?
-      bib: Limperg: This is it!
-      <end>
-      """
-
-  Scenario: More concise 'around' notation
-    Given the following addition to the style:
-      """
-      def preamble
-        around :all, :bibs, "<start>\n", "\n<end>"
+        _around_all_bibs "<start>\n", "\n<end>"
       end
       """
     Given the following file:
@@ -144,8 +119,8 @@ Feature: Bibliography
     Given the following addition to the style:
       """
       def preamble
-        around :all,  :bibs,  "<ul id='bibliography'>\n", "\n</ul>"
-        around :each, :bib,   "<li class='bibitem'>"    , "</li>"
+        _around_all_bibs  "<ul id='bibliography'>\n", "\n</ul>"
+        _around_each_bib   "<li class='bibitem'>"    , "</li>"
       end
       """
     Given the following file:

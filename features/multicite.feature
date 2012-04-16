@@ -50,8 +50,8 @@ Feature: Multicite/Multibib
     Given the following addition to the style:
       """
       def preamble
-        between :cites, ' ||| '
-        between :bibs , ' ;;; '
+        _between_cites ' ||| '
+        _between_bibs  ' ;;; '
       end
       """
     Given the following file:
@@ -70,8 +70,7 @@ Feature: Multicite/Multibib
     Given the following addition to the style:
       """
       def preamble
-        before :each, :cite, '('
-        after  :each, :cite, ')'
+        _around_each_cite '(', ')'
       end
       """
     Given the following file:
@@ -88,8 +87,7 @@ Feature: Multicite/Multibib
     Given the following addition to the style:
       """
       def preamble
-        before :all, :cites, '('
-        after  :all, :cites, ')'
+        _around_all_cites '(', ')'
       end
       """
     Given the following file:
@@ -100,25 +98,4 @@ Feature: Multicite/Multibib
     Then the result should be:
       """
       (cite: Limperg: What is RCite?; cite: Limperg: This is it!)
-      """
-
-  Scenario: More concise 'around' notation
-    Given the following addition to the style:
-      """
-      def preamble
-        around :all , :cites, '(', ')'
-        around :each, :bib  , '[', ']'
-      end
-      """
-    Given the following file:
-      """
-      %%cite book1|book2%%
-      %%bib  book1|book2%%
-      """
-    When I process the file
-    Then the result should be:
-      """
-      (cite: Limperg: What is RCite?; cite: Limperg: This is it!)
-      [bib: Limperg: What is RCite?]
-      [bib: Limperg: This is it!]
       """

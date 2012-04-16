@@ -8,11 +8,11 @@ Feature: Bibliography
       """
       @book{book1,
         author = {Limperg},
-        title  = {What is RCite?}
+        title  = {RCite is cool!}
       } 
       @book{book2,
         author = {Limperg},
-        title  = {This is it!}
+        title  = {What is RCite?}
       }
       """
     Given the following style:
@@ -39,11 +39,11 @@ Feature: Bibliography
     When I process the file
     Then the result should be:
       """
-      cite: Limperg: What is RCite?, p.25
-      cite: Limperg: This is it!, p.30
+      cite: Limperg: RCite is cool!, p.25
+      cite: Limperg: What is RCite?, p.30
 
+      bib: Limperg: RCite is cool!
       bib: Limperg: What is RCite?
-      bib: Limperg: This is it!
       """
 
   Scenario: Sorting
@@ -55,16 +55,16 @@ Feature: Bibliography
       """
     Given the following file:
       """
-      %%cite book1|book2%%
+      %%cite book2|book1%%
 
       %%bibliography%%
       """
     When I process the file
     Then the result should be:
       """
-      cite: Limperg: What is RCite?; cite: Limperg: This is it!
+      cite: Limperg: What is RCite?; cite: Limperg: RCite is cool!
 
-      bib: Limperg: This is it!
+      bib: Limperg: RCite is cool!
       bib: Limperg: What is RCite?
       """
 
@@ -77,19 +77,18 @@ Feature: Bibliography
       """
     Given the following file:
       """
-      %%cite book1|book2%%
+      %%cite book2|book1%%
 
       %%bibliography%%
       """
     When I process the file
     Then the result should be:
       """
-      cite: Limperg: What is RCite?; cite: Limperg: This is it!
+      cite: Limperg: What is RCite?; cite: Limperg: RCite is cool!
 
+      bib: Limperg: RCite is cool!
       bib: Limperg: What is RCite?
-      bib: Limperg: This is it!
       """
-      
 
   Scenario: Surrounding the bibliography with custom text
     Given the following addition to the style:
@@ -107,11 +106,11 @@ Feature: Bibliography
     When I process the file
     Then the result should be:
       """
-      cite: Limperg: What is RCite?; cite: Limperg: This is it!
+      cite: Limperg: RCite is cool!; cite: Limperg: What is RCite?
 
       <start>
+      bib: Limperg: RCite is cool!
       bib: Limperg: What is RCite?
-      bib: Limperg: This is it!
       <end>
       """
 
@@ -132,10 +131,10 @@ Feature: Bibliography
     When I process the file
     Then the result should be:
       """
-      cite: Limperg: What is RCite?; cite: Limperg: This is it!
+      cite: Limperg: RCite is cool!; cite: Limperg: What is RCite?
 
       <ul id='bibliography'>
+      <li class='bibitem'>bib: Limperg: RCite is cool!</li>
       <li class='bibitem'>bib: Limperg: What is RCite?</li>
-      <li class='bibitem'>bib: Limperg: This is it!</li>
       </ul>
       """

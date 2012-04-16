@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 include RCite
+include BibTeX
 
 BIB_FILE   = 'spec/files/test.bib'
 STYLE_FILE = 'spec/files/valid_style.rb'
@@ -142,5 +143,52 @@ describe TextProcessor do
     end
 
   end # describe #process_command
+
+  describe '#sort_bibliography!' do
+
+    it 'should sort @cited_texts according to the given criteria' do
+      txt1 = Entry.new(author: Names.new(Name.new(first: '3rd', last: '4th')),
+                       title:  "1st thing")
+      txt2 = Entry.new(author: Names.new(Name.new(first: '1st', last: '2nd')),
+                       title:  "2nd thing")
+      txt3 = Entry.new(author: Names.new(Name.new(first: '1st', last: '2nd')),
+                       title:  "1st thing")
+      txt4 = Entry.new(author: Names.new(Name.new(first: '5th', last: '6th')),
+                       title:  "3rd thing")
+      texts = [txt1, txt2, txt3, txt4]
+      @cmd_processor.style._sort_bibliography_by [:author, :title]
+
+      @pro.send(:sort_bibliography!, texts) 
+      texts.should == [txt3, txt2, txt1, txt4]
+    end
+
+    it 'should always sort names by last name first, then by first name' do
+      txt1 = Entry.new(author: Names.new(Name.new(first: '1st', last: '2nd')),
+                       title:  "1st thing")
+      txt2 = Entry.new(author: Names.new(Name.new(first: '2nd', last: '1st')),
+                       title:  "1st thing")
+      texts = [txt1, txt2]
+      @cmd_processor.style._sort_bibliography_by [:author]
+
+      @pro.send(:sort_bibliography!, texts)
+      texts.should == [txt2, txt1]
+    end
+
+    context 'if an unambiguous order cannot be determined with the given criteria' do
+      it 'should fall back to the BibTeX key'  do
+        txt1 = Entry.new(author: Names.new(Name.new(first: '1st', last: '2nd')),
+                         title:  "1st thing")
+        txt1.key = "1"
+        txt2 = Entry.new(author: Names.new(Name.new(first: '1st', last: '2nd')),
+                         title:  "1st thing")
+        txt1.key = "2"
+        texts = [txt2, txt1]
+        @cmd_processor.style._sort_bibliography_by [:author]
+
+        @pro.send(:sort_bibliography!, texts)
+        texts.should == [txt1, txt2]
+      end
+    end
+  end
 
 end # describe FileProcessor

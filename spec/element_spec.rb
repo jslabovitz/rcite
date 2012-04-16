@@ -1,11 +1,9 @@
 require 'spec_helper'
 
-include RCite
-
-describe Element do
+describe RCite::Element do
 
   before(:all) do
-    @ele = Element.new(:con, "content")
+    @ele = RCite::Element.new(:con, "content")
   end
 
   describe '#type=' do
@@ -36,14 +34,16 @@ describe Element do
   describe '#==' do
     context "if type and content are equal" do
       it "should return true" do
-        Element.new(:con, "s").should == Element.new(:con, "s")
+        RCite::Element.new(:con, "s").should == RCite::Element.new(:con, "s")
       end
     end
 
     context "if type and content are not equal" do
       it "should return false" do
-        Element.new(:sep, "s").should_not == Element.new(:con, "s")
-        Element.new(:con, "ss").should_not == Element.new(:con, "s")
+        RCite::Element.new(:sep, "s").should_not ==
+        RCite::Element.new(:con, "s")
+        RCite::Element.new(:con, "ss").should_not ==
+        RCite::Element.new(:con, "s")
       end
     end
   end

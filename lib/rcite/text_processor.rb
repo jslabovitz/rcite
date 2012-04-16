@@ -188,7 +188,7 @@ module RCite
 
         result << generate_cite_bib(cmd, key, page, fields)
 
-        @cited_texts << key if cmd == :cite
+        @cited_texts << @command_processor.bibliography[key] if cmd == :cite
       end # each subcommand
 
       a_all = style.public_send("_around_all_#{cmd}s")
@@ -205,12 +205,27 @@ module RCite
     # preprocessing mode. Takes the separators given by {Style#around} and
     # {Style#between} into account.
     #
+    # The bibliography is sorted according to the rules set forth in the
+    # `_sort_bibliography_by` style option. It is a list of BibTeX fields
+    # by which the bibliography should be sorted, usually including `:author`
+    # and `:title`. Precedence is determined by position in the list, so the
+    # first sorting criterion is the first to be sorted by, after that we
+    # sort by the second criterion and so forth.
+    #
+    # If the given criteria are insufficient for determining an order, the
+    # BibTeX key of each text is added as the list criterion.
+    #
+    # Note that the sorting is done in place: @cited_texts is very likely to be
+    # modified after this method has been run.
+    #
     # @return [String] A complete printable bibliography.
     def generate_bibliography
+      sort_bibliography!(@cited_texts)
+
       style = @command_processor.style
       result = []
-      @cited_texts.each do |key|
-        result << generate_cite_bib(:bib, key, nil, nil)
+      @cited_texts.each do |text|
+        result << generate_cite_bib(:bib, text.key, nil, nil)
       end
 
       a_all = style._around_all_bibs
@@ -254,6 +269,32 @@ module RCite
         @command_processor.send(cmd, key, fields_hash).to_s +
         a_each[1].to_s
     end #generate_cite_bib
+
+    # Sorts the bibliography according to the criteria specified in the style
+    # option `_sort_bibliography_by`. If multiple criteria are given, the
+    # first one is the strongest, the second one the second strongest and so on.
+    #
+    # If no unambiguous order can be found using the given criteria, each
+    # text's BibTeX key is added as the last criterion.
+    #
+    # Note that the sorting is done in place.
+    #
+    # @param [Array<BibTeX::Entry>] texts The texts that should be sorted.
+    #   Bibliography entries for these will make up the bibliography.
+    # @return [Array<BibTeX::Entry>] The sorted list of texts.
+    def sort_bibliography!(texts)
+      sort_fields = [@command_processor.style._sort_bibliography_by].flatten
+      texts.sort_by! do |text|
+        sort_fields.map do |field|
+          val = text[field]
+          if val.is_a?(BibTeX::Names)
+            [val.tokens.map { |name| [name.last, name.first] }]
+          else
+            val
+          end
+        end.flatten + [text.key]
+      end
+    end #sort_bibliography
 
   end # class TextProcessor
 end # module RCite
